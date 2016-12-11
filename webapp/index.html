@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 
     <script src="/js/app.js"></script>
+    <script src="/js/controllers.js"></script>
 </head>
 <body id="body">
-<div class="container" id="maincont">
+<div class="container" id="maincont" ng-controller="tabController">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -25,13 +26,13 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> My profile</a></li>
+                    <li ng-click="onClickTab('contact')"><a href="#"><span class="glyphicon glyphicon-user"></span> My profile</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="row content" ng-controller="tabsCtrl">
+    <div class="row content">
         <div class="col-sm-2">
             <div class="well">
                 <img class="img-rounded img-responsive center-block" alt="user_pic" src="/img/deactivated_200.gif">
@@ -39,7 +40,7 @@
             <div class="well" id="tabs">
                 <!--<form action="/logout" method="get">-->
                 <ul class="nav nav-pills nav-stacked">
-                    <li ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.name)}" ng-click="onClickTab(tab)">
+                    <li ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.name)}" ng-click="onClickTab(tab.name)">
                         <a href="#">{{tab.title}}</a>
                     </li>
                 </ul>
@@ -48,12 +49,12 @@
         </div>
         <div class="col-sm-10">
             <div class="tab-content">
-                <profile ng-show="tab.isActiveTab('profile')" ></profile>
-                <friends ng-show="tab.isActiveTab('friends')" ></friends>
-                <users ng-show="tab.isActiveTab('users')" ></users>
-                <conversation ng-show="tab.isActiveTab('conversation')" ></conversation>
-                <messages ng-show="tab.isActiveTab('messages')" ></messages>
-                <contact ng-show="tab.isActiveTab('contact')" ></contact>
+                <profile ng-show="showTab('profile')" ></profile>
+                <friends ng-show="showTab('friends')" ></friends>
+                <users ng-show="showTab('users')" ></users>
+                <conversation ng-show="showTab('conversation')" ></conversation>
+                <messages ng-show="showTab('messages')" ></messages>
+                <contact ng-show="showTab('contact')" ></contact>
             </div>
         </div>
     </div>

@@ -1,0 +1,50 @@
+<div class="container-fluid col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>${profile.name}</strong>
+        </div>
+        <table class="table table-hover">
+            <colgroup>
+                <col class="col-md-4">
+                <col class="col-md-8">
+            </colgroup>
+            <tr>
+                <td>First name:</td>
+                <td>${profile.first_name}</td>
+            <tr>
+                <td>Last name:</td>
+                <td>${profile.last_name}</td>
+            <tr>
+                <td>Email:</td>
+                <td>
+                    <c:if test="${profile.isfriendofuser || profile eq user}">${profile.email}</c:if>
+                </td>
+            <tr>
+            <tr>
+                <td>Phone:</td>
+                <td>
+                    <c:if test="${profile.isfriendofuser || profile eq user}">${profile.phone}</c:if>
+                </td>
+            <tr>
+                <td>Sex:</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${profile.sex==1}">Male</c:when>
+                        <c:when test="${profile.sex==2}">Female</c:when>
+                        <c:otherwise>Unknown</c:otherwise>
+                    </c:choose>
+                </td>
+            <tr>
+                <td>Date of birth:</td>
+                <td>
+                    <fmt:formatDate value="${profile.birth_date}" pattern="dd.MM.yyyy"/>
+                </td>
+            <tr>
+                <td>Registered at:</td>
+                <td>
+                    <fmt:formatDate value="${profile.reg_date}" pattern="dd.MM.yyyy"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
