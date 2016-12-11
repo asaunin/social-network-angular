@@ -1,7 +1,7 @@
-<div class="container-fluid col-sm-12">
+<div class="container-fluid col-sm-12" ng-controller="profileController">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong>${profile.name}</strong>
+            <strong>{{formatName(profile)}}</strong>
         </div>
         <table class="table table-hover">
             <colgroup>
@@ -10,41 +10,34 @@
             </colgroup>
             <tr>
                 <td>First name:</td>
-                <td>${profile.first_name}</td>
+                <td>{{profile.first_name}}</td>
+            </tr>
             <tr>
                 <td>Last name:</td>
-                <td>${profile.last_name}</td>
+                <td>{{profile.last_name}}</td>
+            </tr>
             <tr>
                 <td>Email:</td>
-                <td>
-                    <c:if test="${profile.isfriendofuser || profile eq user}">${profile.email}</c:if>
-                </td>
-            <tr>
+                <td>{{profile.email}}</td><!--TODO Add profile information visibility filter-->
+            </tr>
             <tr>
                 <td>Phone:</td>
-                <td>
-                    <c:if test="${profile.isfriendofuser || profile eq user}">${profile.phone}</c:if>
-                </td>
+                <td>{{profile.phone}}</td><!--TODO Add profile information visibility filter-->
+            </tr>
             <tr>
                 <td>Sex:</td>
-                <td>
-                    <c:choose>
-                        <c:when test="${profile.sex==1}">Male</c:when>
-                        <c:when test="${profile.sex==2}">Female</c:when>
-                        <c:otherwise>Unknown</c:otherwise>
-                    </c:choose>
-                </td>
+                <td>{{formatSex(profile.sex)}}</td>
+            </tr>
             <tr>
                 <td>Date of birth:</td>
-                <td>
-                    <fmt:formatDate value="${profile.birth_date}" pattern="dd.MM.yyyy"/>
-                </td>
+                <td>{{profile.birth_date | date:"dd.MM.yyyy"}}</td>
+            </tr>
             <tr>
                 <td>Registered at:</td>
-                <td>
-                    <fmt:formatDate value="${profile.reg_date}" pattern="dd.MM.yyyy"/>
-                </td>
+                <td>{{profile.reg_date | date:"dd.MM.yyyy"}}</td>
             </tr>
         </table>
     </div>
 </div>
+
+<!--ASK How to use scopes. For example profile scope is busy-->
