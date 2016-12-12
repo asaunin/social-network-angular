@@ -1,4 +1,4 @@
-angular.module('benchmates', []).factory('UserService', ['$rootScope', function ($rootScope) {
+angular.module('benchmates', ['ui.bootstrap.showErrors']).factory('UserService', ['$rootScope', function ($rootScope) {
 
     // $rootScope.load();
 
@@ -18,16 +18,14 @@ angular.module('benchmates', []).factory('UserService', ['$rootScope', function 
             case 1:
                 return 'Male';
             case 2:
-                return 'Male';
+                return 'Female';
             default:
                 return 'Undefined'
         }
     };
 
     user.getName = function () {
-        return user.first_name
-            .concat(" ")
-            .concat(user.last_name);
+        return user.first_name + " " + user.last_name;
     };
 
     return {
