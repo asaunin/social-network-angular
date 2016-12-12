@@ -25,7 +25,7 @@ angular.module('benchmates').controller('tabController', function ($scope) {
     };
 
     $scope.isActiveTab = function (tabName) {
-        if ($scope.currentTabName == 'contact' && tabName == 'profile') {
+        if ($scope.currentTabName == 'settings' && tabName == 'profile') {
             return true;
         }
         if ($scope.currentTabName == 'conversation' && tabName == 'messages') {
@@ -36,7 +36,7 @@ angular.module('benchmates').controller('tabController', function ($scope) {
 
 })
 //TODO Provide routing
-.controller('profileController', function ($scope, $location) {
+.controller('profileController', ['$scope', 'UserService', function ($scope, $rootScope, $location) {
 
     // $scope.profileId = $location.search().profileId;
     // getProfile();
@@ -46,34 +46,7 @@ angular.module('benchmates').controller('tabController', function ($scope) {
     //     });
     // }
 
-    $scope.profile = {
-        id: 1,
-        first_name: 'Alex',
-        last_name: 'Saunin',
-        sex: 1,
-        email: 'asaunin@mail.ru',
-        phone: '+79110940457',
-        birth_date: "1984-03-23T00:00:00.000Z",
-        reg_date: "2015-01-01T00:00:00.000Z"
-    };
+    $scope.profile = $rootScope.getUser();
 
-    //ASK How it's better to implement this
-    $scope.formatName = function (profile) {
-        return profile.first_name
-            .concat(" ")
-            .concat(profile.last_name);
-    };
-
-    $scope.formatSex = function (sex) {
-        switch (sex) {
-            case 1:
-                return 'Male';
-            case 2:
-                return 'Male';
-            default:
-                return 'Undefined'
-        }
-    };
-
-});
+}]);
 
