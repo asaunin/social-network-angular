@@ -1,3 +1,4 @@
+//TODO Provide routing
 angular.module('benchmates').controller('tabController', function ($scope) {
 
     $scope.tabs = [{
@@ -34,9 +35,7 @@ angular.module('benchmates').controller('tabController', function ($scope) {
         return $scope.currentTabName == tabName;
     };
 
-})
-//TODO Provide routing
-.controller('profileController', ['$scope', 'UserService', function ($scope, $rootScope, $location) {
+}).controller('profileController', ['$scope', 'UserService', function ($scope, $rootScope, $location) {
 
     // $scope.profileId = $location.search().profileId;
     // getProfile();
@@ -47,6 +46,24 @@ angular.module('benchmates').controller('tabController', function ($scope) {
     // }
 
     $scope.profile = $rootScope.getUser();
+
+}]).controller('settingsController', ['$scope', 'UserService', function ($scope, $rootScope, $location) {
+
+    // $scope.profileId = $location.search().profileId;
+    // getProfile();
+    // function getProfile() {
+    //     $http.get('/profile/'+ $scope.profileId).then(function (response) {
+    //         $scope.profile = response.data;
+    //     });
+    // }
+
+    $scope.profile = $rootScope.getUser();
+
+    $scope.save = function() {
+        if ($scope.userForm.$valid) {
+            $rootScope.setUser($scope.profile);
+        }
+    };
 
 }]);
 
