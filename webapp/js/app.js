@@ -1,44 +1,24 @@
-angular.module('benchmates', ['ui.bootstrap.showErrors']).factory('UserService', ['$rootScope', function ($rootScope) {
+angular.module('benchmates', ['ui.bootstrap.showErrors']).service('UserService', function () {
 
-    // $rootScope.load();
+    this.getUser = function (data) {
+        var prototype = data;
+        prototype.getSex = function () {
+            switch (prototype.sex) {
+                case 1:
+                    return 'Male';
+                case 2:
+                    return 'Female';
+                default:
+                    return 'Undefined'
+            }
+        };
+        prototype.getName = function () {
+            return prototype.first_name + " " + prototype.last_name;
+        };
+        return prototype;
+    }
 
-    var user = {
-        id: 1,
-        first_name: 'Alex',
-        last_name: 'Saunin',
-        sex: 1,
-        email: 'asaunin@mail.ru',
-        phone: '+79110940457',
-        birth_date: "1984-03-23T00:00:00.000Z",
-        reg_date: "2015-01-01T00:00:00.000Z"
-    };
-
-    user.getSex = function () {
-        switch (user.sex) {
-            case 1:
-                return 'Male';
-            case 2:
-                return 'Female';
-            default:
-                return 'Undefined'
-        }
-    };
-
-    user.getName = function () {
-        return user.first_name + " " + user.last_name;
-    };
-
-    return {
-        setUser: function (u) {
-            user = u;
-        },
-        getUser: function () {
-            return user;
-        }
-
-    };
-
-}]).directive("profile", function () {
+}).directive("profile", function () {
     return {
         restrict: 'E',
         templateUrl: "/partials/profile.html"

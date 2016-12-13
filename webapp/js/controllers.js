@@ -1,6 +1,7 @@
 //TODO Provide routing
 angular.module('benchmates').controller('tabController', function ($scope) {
 
+    $scope.profileId = 1;
     $scope.tabs = [{
         name: 'profile',
         title: 'Profile'
@@ -35,7 +36,13 @@ angular.module('benchmates').controller('tabController', function ($scope) {
         return $scope.currentTabName == tabName;
     };
 
-}).controller('profileController', ['$scope', 'UserService', function ($scope, $rootScope, $location) {
+}).controller('profileController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
+
+    $http.get('/data/profiles.json').then(function (response) {
+        $scope.profile = UserService.getUser(response.data[$scope.profileId]);
+    });
+
+}]).controller('settingsController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
 
     // $scope.profileId = $location.search().profileId;
     // getProfile();
@@ -45,25 +52,11 @@ angular.module('benchmates').controller('tabController', function ($scope) {
     //     });
     // }
 
-    $scope.profile = $rootScope.getUser();
+    // $scope.profileId = 1;
 
-}]).controller('settingsController', ['$scope', 'UserService', function ($scope, $rootScope, $location) {
-
-    // $scope.profileId = $location.search().profileId;
-    // getProfile();
-    // function getProfile() {
-    //     $http.get('/profile/'+ $scope.profileId).then(function (response) {
-    //         $scope.profile = response.data;
-    //     });
-    // }
-
-    $scope.profile = $rootScope.getUser();
-
-    $scope.save = function() {
-        if ($scope.userForm.$valid) {
-            $rootScope.setUser($scope.profile);
-        }
-    };
+    $http.get('/data/profiles.json').then(function (response) {
+        $scope.profile = UserService.getUser(response.data[$scope.profileId]);
+    });
 
 }]);
 
