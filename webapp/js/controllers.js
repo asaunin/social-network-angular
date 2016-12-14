@@ -1,6 +1,7 @@
 //TODO Provide routing
 angular.module('benchmates').controller('tabController', function ($scope) {
 
+    $scope.userId = 1;
     $scope.profileId = 1;
     $scope.tabs = [{
         name: 'profile',
@@ -36,13 +37,13 @@ angular.module('benchmates').controller('tabController', function ($scope) {
         return $scope.currentTabName == tabName;
     };
 
-}).controller('profileController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
+}).controller('profileController', function (UserService, $http, $scope) {
 
     $http.get('/data/profiles.json').then(function (response) {
         $scope.profile = UserService.getUser(response.data[$scope.profileId]);
     });
 
-}]).controller('settingsController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
+}).controller('settingsController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
 
     // $scope.profileId = $location.search().profileId;
     // getProfile();
@@ -56,6 +57,12 @@ angular.module('benchmates').controller('tabController', function ($scope) {
 
     $http.get('/data/profiles.json').then(function (response) {
         $scope.profile = UserService.getUser(response.data[$scope.profileId]);
+    });
+
+}]).controller('usersController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
+
+    $http.get('/data/profiles.json').then(function (response) {
+        $scope.userList = UserService.getUsers(response.data);
     });
 
 }]);
