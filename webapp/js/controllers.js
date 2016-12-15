@@ -40,8 +40,11 @@ angular.module('benchmates').controller('tabController', function ($scope) {
 }).controller('profileController', function (UserService, $http, $scope) {
 
     $http.get('/data/profiles.json').then(function (response) {
-        $scope.profile = UserService.getUser(response.data[$scope.profileId]);
-    });
+        response.data.forEach(function (item) {
+            if (item.id == $scope.profileId) {
+                $scope.profile = UserService.getUser(item);
+            }
+        });    });
 
 }).controller('settingsController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
 
@@ -56,13 +59,35 @@ angular.module('benchmates').controller('tabController', function ($scope) {
     // $scope.profileId = 1;
 
     $http.get('/data/profiles.json').then(function (response) {
-        $scope.profile = UserService.getUser(response.data[$scope.profileId]);
+        response.data.forEach(function (item) {
+            if (item.id == $scope.profileId) {
+                $scope.profile = UserService.getUser(item);
+            }
+        });
     });
 
 }]).controller('usersController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
 
     $http.get('/data/profiles.json').then(function (response) {
         $scope.userList = UserService.getUsers(response.data);
+    });
+
+}]).controller('messagesController', ['UserService', 'MessageService', '$http', '$scope', function (UserService, MessageService, $http, $scope) {
+
+    $http.get('/data/messages.json').then(function (mresponse) {
+        $http.get('/data/profiles.json').then(function (uresponse) {
+            $scope.messageList = MessageService.getMessages(mresponse.data, $scope.userId);
+            $scope.messageList.forEach(function (mitem) {
+                uresponse.data.forEach(function (uitem) {
+                    if (uitem.id == mitem.sender) {
+                        mitem.sender = UserService.getUser(uitem);
+                    }
+                    if (uitem.id == mitem.recipient) {
+                        mitem.recipient = UserService.getUser(uitem);
+                    }
+                });
+            });
+        });
     });
 
 }]);
