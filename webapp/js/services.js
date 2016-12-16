@@ -1,4 +1,5 @@
-angular.module('benchmates').service('UserService', ['$http',  function ($http) {
+//TODO Provide data storage to have possibility to update models
+angular.module('benchmates').service('UserService', ['$http', function ($http) {
 
     getUser = function (data) {
         var prototype = data;
@@ -33,20 +34,30 @@ angular.module('benchmates').service('UserService', ['$http',  function ($http) 
     this.getMessages = function (data, userId) {
         var messageList = [];
         data.forEach(function (item) {
-            if (item.sender = userId || item.recipient == userId)
-                var lastMessage = true;
-            messageList.forEach(function (message) {
-                if (message.date > item.date)
-                    lastMessage = false;
-            });
-            if (lastMessage) {
-                messageList.push({
-                    "id": item.id,
-                    "date": item.date,
-                    "sender": item.sender,
-                    "recipient": item.recipient,
-                    "body": item.body
+            if (item.sender == userId || item.recipient == userId) {
+                var lastMessage = null;
+                messageList.forEach(function (message) {
+                    if (message.sender == item.sender && message.recipient == item.recipient
+                        || message.recipient == item.sender && message.sender == item.recipient)
+                        lastMessage = message;
                 });
+                if (lastMessage == null) {
+                    messageList.push({
+                        "id": item.id,
+                        "date": item.date,
+                        "sender": item.sender,
+                        "recipient": item.recipient,
+                        "body": item.body
+                    });
+                } else {
+                    if (item.date > lastMessage.date) {
+                        lastMessage.id = item.id;
+                        lastMessage.date = item.date;
+                        lastMessage.sender = item.sender;
+                        lastMessage.recipient = item.recipient;
+                        lastMessage.body = item.body;
+                    }
+                }
             }
         });
         return messageList;

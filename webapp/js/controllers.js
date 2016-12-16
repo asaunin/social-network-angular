@@ -86,6 +86,13 @@ angular.module('benchmates').controller('tabController', function ($scope) {
                         mitem.recipient = UserService.getUser(uitem);
                     }
                 });
+                if ($scope.userId == mitem.sender.id) {
+                    mitem.alignment = 'left';
+                    mitem.avatar = mitem.sender.getName();
+                } else {
+                    mitem.alignment = 'right';
+                    mitem.avatar = mitem.recipient.getName();
+                }
             });
         });
     });
