@@ -8,9 +8,8 @@
                 <ul class="chat" style="padding: 0; list-style-type: none" ng-repeat="message in messageList">
                     <li ng-class="['clearfix', message.alignment]">
                         <a href="#" id="conversation" title="Send message">
-                            <!--TODO Figure out, what's wrong with avathar display-->
                             <span ng-class="['chat-img', 'pull-' + message.alignment]">
-                                <img width="60" height="60" avatar="Vasia">
+                            <ng-letter-avatar charCount="2" data={{message.avatar}} shape="round"></ng-letter-avatar>
                             </span>
                             <div class="chat-body clearfix">
                                 <div class="header">

@@ -37,7 +37,7 @@ angular.module('benchmates').controller('tabController', function ($scope) {
         return $scope.currentTabName == tabName;
     };
 
-}).controller('profileController', function (UserService, $http, $scope) {
+}).controller('profileController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
 
     $http.get('/data/profiles.json').then(function (response) {
         response.data.forEach(function (item) {
@@ -46,7 +46,7 @@ angular.module('benchmates').controller('tabController', function ($scope) {
             }
         });    });
 
-}).controller('settingsController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
+}]).controller('settingsController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
 
     // $scope.profileId = $location.search().profileId;
     // getProfile();
@@ -87,11 +87,11 @@ angular.module('benchmates').controller('tabController', function ($scope) {
                     }
                 });
                 if ($scope.userId == mitem.sender.id) {
-                    mitem.alignment = 'left';
-                    mitem.avatar = mitem.sender.getName();
-                } else {
                     mitem.alignment = 'right';
                     mitem.avatar = mitem.recipient.getName();
+                } else {
+                    mitem.alignment = 'left';
+                    mitem.avatar = mitem.sender.getName();
                 }
             });
         });

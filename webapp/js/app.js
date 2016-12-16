@@ -1,4 +1,4 @@
-angular.module('benchmates', ['ui.bootstrap.showErrors']).directive("profile", function () {
+angular.module('benchmates', ['ui.bootstrap.showErrors', 'ngLetterAvatar']).directive("profile", function () {
     return {
         restrict: 'E',
         templateUrl: "/partials/profile.html"
