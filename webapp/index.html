@@ -4,7 +4,9 @@
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>BenthMates</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 
     <link rel="stylesheet" href="css/app.css"/>
@@ -45,7 +47,7 @@
                 <!--<form action="/logout" method="get">-->
                 <ul class="nav nav-pills nav-stacked">
                     <li ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.name)}" ng-click="onClickTab(tab.name)">
-                        <a href="#">{{tab.title}}</a>
+                        <a href=#{{tab.name}}>{{tab.title}}</a>
                     </li>
                 </ul>
                 <!--</form>-->
@@ -53,12 +55,10 @@
         </div>
         <div class="col-sm-10">
             <div class="tab-content">
-                <profile ng-show="showTab('profile')"></profile>
-                <friends ng-show="showTab('friends')"></friends>
-                <users ng-show="showTab('users')"></users>
-                <conversation ng-show="showTab('conversation')"></conversation>
-                <messages ng-show="showTab('messages')"></messages>
-                <settings ng-show="showTab('settings')"></settings>
+                <div ng-view></div>
+                <!--<conversation ng-show="showTab('conversation')"></conversation>-->
+                <!--<messages ng-show="showTab('messages')"></messages>-->
+                <!--<settings ng-show="showTab('settings')"></settings>-->
             </div>
         </div>
     </div>

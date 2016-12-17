@@ -1,4 +1,6 @@
-angular.module('benchmates', ['ui.bootstrap.showErrors', 'ngLetterAvatar']).directive("profile", function () {
+var app = angular.module('benchmates', ['ngRoute', 'ngResource', 'ui.bootstrap.showErrors', 'ngLetterAvatar']);
+
+app.directive("profile", function () {
     return {
         restrict: 'E',
         templateUrl: "/partials/profile.html"
@@ -29,3 +31,31 @@ angular.module('benchmates', ['ui.bootstrap.showErrors', 'ngLetterAvatar']).dire
         templateUrl: "/partials/settings.html"
     };
 });
+
+app.config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
+
+    $routeProvider
+        .when('/profile', {
+            templateUrl: '/partials/profile.html',
+            controller: 'profileController'
+        })
+        .when('/users', {
+            templateUrl: '/partials/users.html',
+            controller: 'usersController'
+        })
+        .when('/messages', {
+            templateUrl: '/partials/messages.html',
+            controller: 'messagesController'
+        })
+        .when('/friends', {
+            templateUrl: '/partials/friends.html',
+            controller: 'friendsController'
+        })
+        .when('/settings', {
+            templateUrl: '/partials/settings.html',
+            controller: 'settingsController'
+        })
+        .otherwise(
+            {redirectTo: '/profile'}
+        );
+}]);

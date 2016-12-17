@@ -1,8 +1,26 @@
-//TODO Provide routing
-angular.module('benchmates').controller('tabController', function ($scope) {
+var app = angular.module('benchmates');
 
-    $scope.userId = 1;
-    $scope.profileId = 1;
+app.controller('tabController', ['$q', '$scope', '$route', 'UserService', 'MessageService', function ($q, $scope, $route, UserService, MessageService) {
+
+    $scope.userId = 0;
+    $scope.profileId = 0;
+
+    var p1, p2, p3;
+    p1 = UserService.loadUsers().then(function () {
+         p2 = MessageService.loadMessages();
+         p3 = UserService.loadFriends();
+    });
+
+    $q.all([p1, p2, p3]).then(function (data) {
+        $scope.userId = 1;
+        $scope.profileId = 1;
+        $scope.reloadRoute = function() {
+            $route.reload();
+        }
+    });
+
+    $scope.currentTabName = 'profile';
+
     $scope.tabs = [{
         name: 'profile',
         title: 'Profile'
@@ -17,14 +35,8 @@ angular.module('benchmates').controller('tabController', function ($scope) {
         title: 'Messages'
     }];
 
-    $scope.currentTabName = 'profile';
-
     $scope.onClickTab = function (tabName) {
         $scope.currentTabName = tabName;
-    };
-
-    $scope.showTab = function (tabName) {
-        return $scope.currentTabName == tabName;
     };
 
     $scope.isActiveTab = function (tabName) {
@@ -37,26 +49,9 @@ angular.module('benchmates').controller('tabController', function ($scope) {
         return $scope.currentTabName == tabName;
     };
 
-}).controller('profileController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
+}]);
 
-    $http.get('/data/profiles.json').then(function (response) {
-        response.data.forEach(function (item) {
-            if (item.id == $scope.profileId) {
-                $scope.profile = UserService.getUser(item);
-            }
-        });    });
-
-}]).controller('settingsController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
-
-    // $scope.profileId = $location.search().profileId;
-    // getProfile();
-    // function getProfile() {
-    //     $http.get('/profile/'+ $scope.profileId).then(function (response) {
-    //         $scope.profile = response.data;
-    //     });
-    // }
-
-    // $scope.profileId = 1;
+app.controller('profileController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
 
     $http.get('/data/profiles.json').then(function (response) {
         response.data.forEach(function (item) {
@@ -66,13 +61,37 @@ angular.module('benchmates').controller('tabController', function ($scope) {
         });
     });
 
-}]).controller('usersController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
+}]);
+
+app.controller('settingsController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
+
+    $http.get('/data/profiles.json').then(function (response) {
+        response.data.forEach(function (item) {
+            if (item.id == $scope.profileId) {
+                $scope.profile = UserService.getUser(item);
+            }
+        });
+    });
+
+}]);
+
+app.controller('usersController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
 
     $http.get('/data/profiles.json').then(function (response) {
         $scope.userList = UserService.getUsers(response.data);
     });
 
-}]).controller('messagesController', ['UserService', 'MessageService', '$http', '$scope', function (UserService, MessageService, $http, $scope) {
+}]);
+
+app.controller('friendsController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
+
+    $http.get('/data/profiles.json').then(function (response) {
+        $scope.userList = UserService.getUsers(response.data);
+    });
+
+}]);
+
+app.controller('messagesController', ['UserService', 'MessageService', '$http', '$scope', function (UserService, MessageService, $http, $scope) {
 
     $http.get('/data/messages.json').then(function (mresponse) {
         $http.get('/data/profiles.json').then(function (uresponse) {

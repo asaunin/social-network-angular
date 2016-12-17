@@ -1,5 +1,34 @@
 //TODO Provide data storage to have possibility to update models
-angular.module('benchmates').service('UserService', ['$http', function ($http) {
+var app = angular.module('benchmates');
+
+app.service('UserService', ['$http', function ($http) {
+
+    var users = [];
+    var messages = [];
+
+    this.getUserById = function (id) {
+        users.foreach(function (user) {
+            if (id == user.id) {
+                return user;
+            }
+        });
+    };
+
+    this.loadUsers = function () {
+        return $http.get('/data/profiles.json').then(function (response) {
+            response.data.forEach(function (data) {
+                users.push(getUser(data));
+            });
+        });
+    };
+
+    this.loadFriends = function () {
+        return $http.get('/data/friends.json').then(function (response) {
+            response.data.forEach(function (data) {
+                // users.push(getUser(data));
+            });
+        });
+    };
 
     getUser = function (data) {
         var prototype = data;
@@ -20,16 +49,34 @@ angular.module('benchmates').service('UserService', ['$http', function ($http) {
         return prototype;
     };
 
-    this.getUser = getUser;
-    this.getUsers = function (data) {
-        var userList = [];
-        data.forEach(function (item) {
-            userList.push(getUser(item));
+    getUserById = function (id) {
+        users.forEach(function (user) {
+           if (id == user.id) {
+               return user;
+           }
         });
-        return userList;
-    }
+    };
 
-}]).service('MessageService', ['UserService', function (UserService) {
+    this.getUsers = function () {
+        return users;
+    };
+
+    this.getUser = getUser;
+    this.getUserById = getUserById;
+
+}]);
+
+app.service('MessageService', ['UserService', '$http', function (UserService, $http) {
+
+    this.loadMessages = function () {
+        return $http.get('/data/messages.json').then(function (response) {
+            response.data.forEach(function (data) {
+                messages.push(data);
+                messages.sender = getUserById(messages.sender);
+                messages.recipient = getUserById(messages.recipient);
+            });
+        });
+    };
 
     this.getMessages = function (data, userId) {
         var messageList = [];
