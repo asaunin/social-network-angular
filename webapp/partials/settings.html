@@ -1,4 +1,5 @@
-<div class="container-fluid col-sm-12 view-container" ng-controller="settingsController">
+<!--TODO: Rewrite valudation control-->
+<div class="container-fluid col-sm-12 view-container" ng-controller="settingsController" ng-submit="userForm.$valid && updateAccount()">
     <div class="panel panel-default ">
         <div class="panel-heading">
             <strong>{{editableAccount.getName()}}</strong>
@@ -87,7 +88,7 @@
                     <label class="col-md-4 control-label"></label>
                     <div class="col-md-4">
                         <input type="submit" ng-class="['btn btn-primary', userForm.$valid ? '' : 'disabled']"
-                               value="Submit information" ng-click="save()">
+                               value="Submit information">
                     </div>
                 </div>
             </form>
