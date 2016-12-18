@@ -23,7 +23,7 @@ app.service('UserService', ['$http', function ($http) {
             return prototype.first_name + " " + prototype.last_name;
         };
         prototype.update = function (user) {
-            Object.keys(prototype).forEach(function(key) {
+            Object.keys(prototype).forEach(function (key) {
                 prototype[key] = user[key];
             });
         };
@@ -79,6 +79,24 @@ app.service('UserService', ['$http', function ($http) {
         return friends;
     };
 
+    this.addFriend = function (accountId, friendId) {
+        if (accountId != friendId) {
+            var user = getUserById(accountId);
+            if (!user.friends.includes(friendId)) {
+                user.friends.push(friendId);
+            }
+        }
+    };
+
+    this.removeFriend = function (accountId, friendId) {
+        if (accountId != friendId) {
+            var user = getUserById(accountId);
+            if (user.friends.includes(friendId)) {
+                user.friends.splice(user.friends.indexOf(friendId), 1);
+            }
+        }
+    };
+
     this.getUserById = getUserById;
 
 }]);
@@ -109,7 +127,7 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
         message.avatar = message.sender.getName();
     }
 
-    this.scrollElement = function(id) {
+    this.scrollElement = function (id) {
         $timeout(function () {
             var scroller = document.getElementById(id);
             scroller.scrollTop = scroller.scrollHeight;
@@ -181,7 +199,7 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
         return dialogueMessages;
     };
 
-    this.add = function (senderId, recipientId, text) {
+    this.addMessage = function (senderId, recipientId, text) {
         var message = {
             "id": 666,
             "date": new Date(),

@@ -95,11 +95,25 @@ app.controller('settingsController', ['UserService', '$http', '$scope',
 app.controller('usersController', ['UserService', 'filterFilter', '$http', '$scope', '$route', '$location',
     function (UserService, filterFilter, $http, $scope, $route, $location) {
 
-        if ($location.$$path == '/users') {
-            $scope.userList = UserService.getUsers();
-        } else {
-            $scope.userList = UserService.getFriends($scope.accountId);
+        function updateList() {
+            if ($location.$$path == '/users') {
+                $scope.userList = UserService.getUsers();
+            } else {
+                $scope.userList = UserService.getFriends($scope.accountId);
+            }
         }
+
+        updateList();
+
+        $scope.addFriend = function (friendId) {
+            UserService.addFriend($scope.accountId, friendId);
+            updateList();
+        };
+
+        $scope.removeFriend = function (friendId) {
+            UserService.removeFriend($scope.accountId, friendId);
+            updateList();
+        };
 
         // pagination controls
         $scope.currentPage = 1;
@@ -146,7 +160,7 @@ app.controller('dialogueController', ['UserService', 'MessageService', '$http', 
         MessageService.scrollElement("chat");
 
         $scope.sendMessage = function () {
-            var message = MessageService.add($scope.accountId, $scope.profile.id, $scope.messageText);
+            var message = MessageService.addMessage($scope.accountId, $scope.profile.id, $scope.messageText);
             $scope.messageList.push(message);
             $scope.messageText = "";
             MessageService.scrollElement("chat");
