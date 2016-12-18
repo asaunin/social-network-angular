@@ -32,7 +32,7 @@ app.service('UserService', ['$http', function ($http) {
 
     getUser = function (data) {
         var prototype = data;
-        // prototype.birth_date = new Date(data.birth_date);
+        prototype.birth_date = new Date(Date.parse(data.birth_date));
         prototype.friends = [];
         prototype.getSex = function () {
             switch (prototype.sex) {
@@ -99,6 +99,7 @@ app.service('MessageService', ['UserService', '$http', function (UserService, $h
         return $http.get('/data/messages.json').then(function (response) {
             response.data.forEach(function (data) {
                 var message = data;
+                message.date = new Date(Date.parse(data.date));
                 message.sender = getUserById(data.sender);
                 message.recipient = getUserById(data.recipient);
                 messages.push(message);

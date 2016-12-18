@@ -17,7 +17,7 @@
                                         {{message.recipient.getName()}}</strong>
                                     <small class="pull-right text-muted">
                                         <span class="glyphicon glyphicon-time"></span>
-                                        {{message.date}}
+                                        {{message.date | date:"dd.MM.yyyy"}} <!-- TODO: Implement date for yesterday / time for today filter -->
                                     </small>
                                 </div>
                                 <div class="last-message text-muted">{{message.body}}</div>
