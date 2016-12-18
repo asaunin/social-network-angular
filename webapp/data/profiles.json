@@ -1,8 +1,8 @@
 [
   {
     "id": 1,
-    "first_name": "Saunin",
-    "last_name": "Alexander",
+    "first_name": "Alexander",
+    "last_name": "Saunin",
     "birth_date": "1984-03-23T00:00:00.000Z",
     "reg_date": "1984-03-23T00:00:00.000Z",
     "email": "asaunin@mail.ru",

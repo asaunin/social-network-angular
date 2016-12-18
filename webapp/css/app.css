@@ -1,5 +1,9 @@
 .view-container {
-    height: 80vh;
+    height: 85vh;
+}
+
+.angular-with-newlines {
+    white-space: pre-wrap;
 }
 
 .link-disabled {
