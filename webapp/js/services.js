@@ -5,32 +5,7 @@ app.service('UserService', ['$http', function ($http) {
     var users = [];
     var friends = [];
 
-    this.getUserById = function (id) {
-        users.foreach(function (user) {
-            if (id == user.id) {
-                return user;
-            }
-        });
-    };
-
-    this.loadUsers = function () {
-        return $http.get('/data/profiles.json').then(function (response) {
-            response.data.forEach(function (data) {
-                users.push(getUser(data));
-            });
-        });
-    };
-
-    this.loadFriends = function () {
-        return $http.get('/data/friends.json').then(function (response) {
-            response.data.forEach(function (data) {
-                var user = getUserById(data.userid);
-                user.addFriend(data.friendid);
-            });
-        });
-    };
-
-    getUser = function (data) {
+    function getUser(data) {
         var prototype = data;
         prototype.birth_date = new Date(Date.parse(data.birth_date));
         prototype.friends = [];
@@ -63,9 +38,9 @@ app.service('UserService', ['$http', function ($http) {
             return (prototype.friends.indexOf(id) != -1);
         };
         return prototype;
-    };
+    }
 
-    getUserById = function (id) {
+    function getUserById(id) {
         var user = {};
         users.forEach(function (item) {
             if (id == item.id) {
@@ -73,6 +48,23 @@ app.service('UserService', ['$http', function ($http) {
             }
         });
         return user;
+    }
+
+    this.loadUsers = function () {
+        return $http.get('/data/profiles.json').then(function (response) {
+            response.data.forEach(function (data) {
+                users.push(getUser(data));
+            });
+        });
+    };
+
+    this.loadFriends = function () {
+        return $http.get('/data/friends.json').then(function (response) {
+            response.data.forEach(function (data) {
+                var user = getUserById(data.userid);
+                user.addFriend(data.friendid);
+            });
+        });
     };
 
     this.getUsers = function () {
@@ -91,23 +83,11 @@ app.service('UserService', ['$http', function ($http) {
 
 }]);
 
-app.service('MessageService', ['UserService', '$http', function (UserService, $http) {
+app.service('MessageService', ['UserService', '$http', '$timeout', function (UserService, $http, $timeout) {
 
     var messages = [];
 
-    this.loadMessages = function () {
-        return $http.get('/data/messages.json').then(function (response) {
-            response.data.forEach(function (data) {
-                var message = data;
-                message.date = new Date(Date.parse(data.date));
-                message.sender = getUserById(data.sender);
-                message.recipient = getUserById(data.recipient);
-                messages.push(message);
-            });
-        });
-    };
-
-    updateLastMessageAvatar = function (message, accountId) {
+    function updateLastMessageAvatar(message, accountId) {
         if (accountId == message.sender.id) {
             message.alignment = 'left';
             message.avatar = message.recipient.getName();
@@ -117,9 +97,9 @@ app.service('MessageService', ['UserService', '$http', function (UserService, $h
             message.avatar = message.sender.getName();
             message.interlocutor = message.sender;
         }
-    };
+    }
 
-    updateDialogAvatar = function (message, accountId) {
+    function updateDialogAvatar(message, accountId) {
         if (accountId == message.sender.id) {
             message.alignment = 'right';
         } else {
@@ -127,6 +107,25 @@ app.service('MessageService', ['UserService', '$http', function (UserService, $h
         }
         message.interlocutor = message.sender;
         message.avatar = message.sender.getName();
+    }
+
+    this.scrollElement = function(id) {
+        $timeout(function () {
+            var scroller = document.getElementById(id);
+            scroller.scrollTop = scroller.scrollHeight;
+        }, 0, false)
+    };
+
+    this.loadMessages = function () {
+        return $http.get('/data/messages.json').then(function (response) {
+            response.data.forEach(function (data) {
+                var message = data;
+                message.date = new Date(Date.parse(data.date));
+                message.sender = UserService.getUserById(data.sender);
+                message.recipient = UserService.getUserById(data.recipient);
+                messages.push(message);
+            });
+        });
     };
 
     this.getLastMessages = function (accountId) {
@@ -186,8 +185,8 @@ app.service('MessageService', ['UserService', '$http', function (UserService, $h
         var message = {
             "id": 666,
             "date": new Date(),
-            "sender": getUserById(senderId),
-            "recipient": getUserById(recipientId),
+            "sender": UserService.getUserById(senderId),
+            "recipient": UserService.getUserById(recipientId),
             "body": text
         };
         messages.push(message);

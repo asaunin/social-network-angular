@@ -4,7 +4,6 @@ app.controller('tabController', ['$q', '$scope', '$route', 'UserService', 'Messa
     function ($q, $scope, $route, UserService, MessageService) {
 
         $scope.accountId = 0;
-        $scope.profileId = 0;
 
         var p1, p2, p3;
         p1 = UserService.loadUsers().then(function () {
@@ -15,7 +14,6 @@ app.controller('tabController', ['$q', '$scope', '$route', 'UserService', 'Messa
         $q.all([p1, p2, p3]).then(function (data) {
             $scope.accountId = 1;
             $scope.account = UserService.getUserById($scope.accountId);
-            $scope.profileId = 1;
             $scope.reloadRoute = function () {
                 $route.reload();
             }
@@ -56,7 +54,7 @@ app.controller('tabController', ['$q', '$scope', '$route', 'UserService', 'Messa
 app.controller('profileController', ['UserService', '$http', '$scope', '$routeParams',
     function (UserService, $http, $scope, $routeParams) {
 
-        $scope.profile = UserService.getUserById($routeParams.profileId == undefined ? $scope.profileId : $routeParams.profileId);
+        $scope.profile = UserService.getUserById($routeParams.profileId == undefined ? $scope.accountId : $routeParams.profileId);
 
     }]);
 
@@ -134,22 +132,24 @@ app.controller('messagesController', ['UserService', 'MessageService', '$http', 
 
         $scope.messageList = MessageService.getLastMessages($scope.accountId);
 
+        MessageService.scrollElement("chat");
+
     }]);
 
 app.controller('dialogueController', ['UserService', 'MessageService', '$http', '$scope', '$routeParams',
     function (UserService, MessageService, $http, $scope, $routeParams) {
 
-        $scope.profile = UserService.getUserById($routeParams.profileId == undefined ? $scope.profileId : $routeParams.profileId);
+        $scope.profile = UserService.getUserById($routeParams.profileId == undefined ? $scope.accountId : $routeParams.profileId);
 
         $scope.messageList = MessageService.getDialogueMessages($scope.accountId, $scope.profile.id);
 
-        $location.hash('anchor');
+        MessageService.scrollElement("chat");
 
         $scope.sendMessage = function () {
             var message = MessageService.add($scope.accountId, $scope.profile.id, $scope.messageText);
             $scope.messageList.push(message);
             $scope.messageText = "";
-            $location.hash('anchor');
+            MessageService.scrollElement("chat");
         };
 
     }]);
