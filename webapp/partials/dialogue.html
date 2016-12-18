@@ -1,0 +1,41 @@
+<div class="container-fluid col-sm-12 view-container" ng-controller="dialogueController" ng-submit="sendMessage()">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Conversation with <strong>{{$scope.profile.getName()}}</strong>
+        </div>
+        <div class="panel-body" id="chat" style="max-height: 64vh; min-height: 64vh; overflow-y: auto;">
+            <div class="chat-message">
+                <ul class="chat" style="padding: 0; list-style-type: none"
+                    ng-repeat="message in messageList | orderBy: 'date'">
+                    <li ng-class="['clearfix', message.alignment]">
+                            <span ng-class="['chat-img', 'pull-' + message.alignment]">
+                            <ng-letter-avatar data={{message.avatar}} shape="round"></ng-letter-avatar>
+                            </span>
+                        <div class="chat-body clearfix">
+                            <div class="header">
+                                <strong class="primary-font">{{message.sender.getName()}}</strong>
+                                <small class="pull-right text-muted">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    {{message.date | date:"dd.MM.yyyy"}}
+                                    <!-- TODO: Implement date for yesterday / time for today filter -->
+                                </small>
+                            </div>
+                            <div class="last-message text-muted angular-with-newlines">{{message.body}}</div>
+                        </div>
+                    </li>
+                </ul>
+                <div id="anchor" class="anchor"></div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <form name="dialogueForm" role="form">
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" ng-required="true" maxlength="255" id="messageBody"
+                              name="messageBody" ng-model="messageText"
+                              ></textarea>
+                </div>
+                <input type="submit" value="Send" ng-class="['btn btn-primary', dialogueForm.$valid ? '' : 'disabled']">
+            </form>
+        </div>
+    </div>
+</div>
