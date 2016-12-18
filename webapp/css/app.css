@@ -1,5 +1,11 @@
-.container-fluid {
-    min-height: 80%;
+.view-container {
+    height: 80vh;
+}
+
+.link-disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    color: grey;
 }
 
 .table .glyphicon-envelope {
@@ -21,7 +27,7 @@
     border-bottom-width: 0;
 }
 
-#usersSearchText {
+#userSearch {
     width: 70%;
     float: right;
 }

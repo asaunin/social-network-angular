@@ -2,19 +2,20 @@ var app = angular.module('benchmates');
 
 app.controller('tabController', ['$q', '$scope', '$route', 'UserService', 'MessageService', function ($q, $scope, $route, UserService, MessageService) {
 
-    $scope.userId = 0;
+    $scope.accountId = 0;
     $scope.profileId = 0;
 
     var p1, p2, p3;
     p1 = UserService.loadUsers().then(function () {
-         p2 = MessageService.loadMessages();
-         p3 = UserService.loadFriends();
+        p2 = MessageService.loadMessages();
+        p3 = UserService.loadFriends();
     });
 
     $q.all([p1, p2, p3]).then(function (data) {
-        $scope.userId = 1;
+        $scope.accountId = 1;
+        $scope.account = UserService.getUserById($scope.accountId);
         $scope.profileId = 1;
-        $scope.reloadRoute = function() {
+        $scope.reloadRoute = function () {
             $route.reload();
         }
     });
@@ -51,69 +52,90 @@ app.controller('tabController', ['$q', '$scope', '$route', 'UserService', 'Messa
 
 }]);
 
-app.controller('profileController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
+app.controller('profileController', ['UserService', '$http', '$scope', '$routeParams', function (UserService, $http, $scope, $routeParams) {
 
-    $http.get('/data/profiles.json').then(function (response) {
-        response.data.forEach(function (item) {
-            if (item.id == $scope.profileId) {
-                $scope.profile = UserService.getUser(item);
-            }
-        });
-    });
+    $scope.profile = UserService.getUserById($routeParams.profileId == undefined ? $scope.profileId : $routeParams.profileId);
 
 }]);
 
 app.controller('settingsController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
 
-    $http.get('/data/profiles.json').then(function (response) {
-        response.data.forEach(function (item) {
-            if (item.id == $scope.profileId) {
-                $scope.profile = UserService.getUser(item);
-            }
-        });
-    });
+    $scope.editableAccount = Object.assign({}, $scope.account);
+
+    $scope.save = function () {
+        $scope.account.update($scope.editableAccount);
+    };
+
+    $scope.chooseBirthDate = function() {
+        $scope.birthDate.opened = true;
+    };
+
+    $scope.birthDate = {
+        opened: false
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(),
+        minDate: new Date(1900, 1, 1),
+        startingDay: 1
+    };
+
+    // Disable weekend selection
+    function disabled(data) {
+        var date = data.date,
+            mode = data.mode;
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
 
 }]);
 
-app.controller('usersController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
+app.controller('usersController', ['UserService', 'filterFilter', '$http', '$scope', '$route', '$location', function (UserService, filterFilter, $http, $scope, $route, $location) {
 
-    $http.get('/data/profiles.json').then(function (response) {
-        $scope.userList = UserService.getUsers(response.data);
-    });
+    if ($location.$$path == '/users') {
+        $scope.userList =  UserService.getUsers();
+    } else {
+        $scope.userList = UserService.getFriends($scope.accountId);
+    }
+
+    // pagination controls
+    $scope.currentPage = 1;
+    $scope.totalItems = $scope.userList.length;
+    $scope.entryLimit = 15; // items per page
+    $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+
+    // $watch search to update pagination
+    $scope.$watch('userSearch', function (newVal, oldVal) {
+        $scope.filtered = filterFilter($scope.userList, newVal);
+        $scope.totalItems = $scope.filtered.length;
+        $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+        $scope.currentPage = 1;
+    }, true);
 
 }]);
 
-app.controller('friendsController', ['UserService', '$http', '$scope', function (UserService, $http, $scope) {
-
-    $http.get('/data/profiles.json').then(function (response) {
-        $scope.userList = UserService.getUsers(response.data);
-    });
-
-}]);
+app.filter('startFrom', function () {
+    return function (input, start) {
+        if (input) {
+            start = +start;
+            return input.slice(start);
+        }
+        return [];
+    };
+});
 
 app.controller('messagesController', ['UserService', 'MessageService', '$http', '$scope', function (UserService, MessageService, $http, $scope) {
 
-    $http.get('/data/messages.json').then(function (mresponse) {
-        $http.get('/data/profiles.json').then(function (uresponse) {
-            $scope.messageList = MessageService.getMessages(mresponse.data, $scope.userId);
-            $scope.messageList.forEach(function (mitem) {
-                uresponse.data.forEach(function (uitem) {
-                    if (uitem.id == mitem.sender) {
-                        mitem.sender = UserService.getUser(uitem);
-                    }
-                    if (uitem.id == mitem.recipient) {
-                        mitem.recipient = UserService.getUser(uitem);
-                    }
-                });
-                if ($scope.userId == mitem.sender.id) {
-                    mitem.alignment = 'right';
-                    mitem.avatar = mitem.recipient.getName();
-                } else {
-                    mitem.alignment = 'left';
-                    mitem.avatar = mitem.sender.getName();
-                }
-            });
-        });
+    $scope.messageList = MessageService.getLastMessages($scope.accountId);
+    $scope.messageList.forEach(function (mitem) {
+        if ($scope.accountId == mitem.sender.id) {
+            mitem.alignment = 'right';
+            mitem.avatar = mitem.recipient.getName();
+        } else {
+            mitem.alignment = 'left';
+            mitem.avatar = mitem.sender.getName();
+        }
     });
 
 }]);
