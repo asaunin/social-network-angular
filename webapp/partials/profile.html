@@ -18,11 +18,11 @@
             </tr>
             <tr>
                 <td>Email:</td>
-                <td>{{profile.email}}</td><!--TODO Add profile information visibility filter-->
+                <td><span ng-if="profile.hasFriend(account.id) || account.id == profile.id">{{profile.email}}</span></td>
             </tr>
             <tr>
                 <td>Phone:</td>
-                <td>{{profile.phone}}</td><!--TODO Add profile information visibility filter-->
+                <td><span ng-if="profile.hasFriend(account.id) || account.id == profile.id">{{profile.phone}}</span></td>
             </tr>
             <tr>
                 <td>Sex:</td>
