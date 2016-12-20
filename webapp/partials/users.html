@@ -19,7 +19,7 @@
         <table class="table table-hover">
             <tr ng-repeat="userProfile in userList | orderBy: '[first_name, last_name]' | filter : userSearch | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
                 <td class="col-md-5">
-                    <a href="#profile/{{userProfile.id}}" id="profile" title="View profile">
+                    <a href="profile/{{userProfile.id}}" id="profile" title="View profile">
                         {{userProfile.getName()}}
                     </a>
                 </td>
@@ -27,20 +27,20 @@
                     <span ng-show="userProfile.hasFriend(account.id)">{{userProfile.email}}</span>
                 </td>
                 <td class="col-md-1">
-                    <a href="#messages/{{userProfile.id}}" id="dialogue" title="Send message">
+                    <a href="messages/{{userProfile.id}}" id="dialogue" title="Send message">
                         <span class="glyphicon glyphicon-envelope"></span>
                     </a>
                     <a
                             ng-class="userProfile == account ? 'link-disabled' : ''"
                             ng-show="account.hasFriend(userProfile.id)"
-                            title="Remove from friends" onclick="removeFriend(userProfile.id)"
+                            title="Remove from friends"
                             ng-click="removeFriend(userProfile.id)">
                         <span class="glyphicon glyphicon-minus-sign"></span>
                     </a>
                     <a
                             ng-class="userProfile == account ? 'link-disabled' : ''"
                             ng-show="!account.hasFriend(userProfile.id)"
-                            title="Add friend" onclick="addFriend(userProfile.id)"
+                            title="Add friend"
                             ng-click="addFriend(userProfile.id)">
                         <span class="glyphicon glyphicon-plus-sign"></span>
                     </a>

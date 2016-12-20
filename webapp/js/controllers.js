@@ -99,19 +99,19 @@ app.controller('usersController', ['UserService', 'filterFilter', '$http', '$sco
             if ($location.$$path == '/users') {
                 $scope.userList = UserService.getUsers();
             } else {
-                $scope.userList = UserService.getFriends($scope.accountId);
+                $scope.userList = UserService.getFriends($scope.account);
             }
         }
 
         updateList();
 
         $scope.addFriend = function (friendId) {
-            UserService.addFriend($scope.accountId, friendId);
+            $scope.account.addFriend(friendId);
             updateList();
         };
 
         $scope.removeFriend = function (friendId) {
-            UserService.removeFriend($scope.accountId, friendId);
+            $scope.account.removeFriend(friendId);
             updateList();
         };
 

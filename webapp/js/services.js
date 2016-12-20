@@ -28,11 +28,15 @@ app.service('UserService', ['$http', function ($http) {
             });
         };
         prototype.addFriend = function (id) {
-            prototype.friends.push(id);
+            if (prototype.id != id) {
+                prototype.friends.push(id);
+            }
         };
         prototype.removeFriend = function (id) {
-            var index = prototype.friends.indexOf(id);
-            array.splice(index, 1);
+            if (prototype.id != id) {
+                var index = prototype.friends.indexOf(id);
+                prototype.friends.splice(index, 1);
+            }
         };
         prototype.hasFriend = function (id) {
             return (prototype.friends.indexOf(id) != -1);
@@ -50,54 +54,50 @@ app.service('UserService', ['$http', function ($http) {
         return user;
     }
 
-    this.loadUsers = function () {
+    function loadUsers() {
         return $http.get('/data/profiles.json').then(function (response) {
             response.data.forEach(function (data) {
                 users.push(getUser(data));
             });
         });
-    };
+    }
 
-    this.loadFriends = function () {
+    function loadFriends() {
         return $http.get('/data/friends.json').then(function (response) {
             response.data.forEach(function (data) {
                 var user = getUserById(data.userid);
                 user.addFriend(data.friendid);
             });
         });
-    };
+    }
 
-    this.getUsers = function () {
+    function getUsers() {
         return users;
-    };
+    }
 
-    this.getFriends = function (accountId) {
+    function getFriends(account) {
         var friends = [];
-        getUserById(accountId).friends.forEach(function (id) {
+        account.friends.forEach(function (id) {
             friends.push(getUserById(id));
         });
         return friends;
-    };
+    }
 
-    this.addFriend = function (accountId, friendId) {
-        if (accountId != friendId) {
-            var user = getUserById(accountId);
-            if (!user.friends.includes(friendId)) {
-                user.friends.push(friendId);
+    function removeFriend(account, friendId) {
+        if (account.id != friendId) {
+            if (account.friends.includes(friendId)) {
+                account.friends.splice(account.friends.indexOf(friendId), 1);
             }
         }
-    };
+    }
 
-    this.removeFriend = function (accountId, friendId) {
-        if (accountId != friendId) {
-            var user = getUserById(accountId);
-            if (user.friends.includes(friendId)) {
-                user.friends.splice(user.friends.indexOf(friendId), 1);
-            }
-        }
-    };
-
-    this.getUserById = getUserById;
+    return {
+        getUserById: getUserById,
+        getFriends: getFriends,
+        getUsers: getUsers,
+        loadFriends: loadFriends,
+        loadUsers: loadUsers
+    }
 
 }]);
 
@@ -127,14 +127,14 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
         message.avatar = message.sender.getName();
     }
 
-    this.scrollElement = function (id) {
+    function scrollElement(id) {
         $timeout(function () {
             var scroller = document.getElementById(id);
             scroller.scrollTop = scroller.scrollHeight;
         }, 0, false)
-    };
+    }
 
-    this.loadMessages = function () {
+    function loadMessages() {
         return $http.get('/data/messages.json').then(function (response) {
             response.data.forEach(function (data) {
                 var message = data;
@@ -144,9 +144,9 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
                 messages.push(message);
             });
         });
-    };
+    }
 
-    this.getLastMessages = function (accountId) {
+    function getLastMessages(accountId) {
         var lastMessages = [];
         messages.forEach(function (item) {
             if (item.sender.id == accountId || item.recipient.id == accountId) {
@@ -179,9 +179,9 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
             }
         });
         return lastMessages;
-    };
+    }
 
-    this.getDialogueMessages = function (accountId, interlocutorId) {
+    function getDialogueMessages(accountId, interlocutorId) {
         var dialogueMessages = [];
         messages.forEach(function (item) {
             if (item.sender.id == accountId && item.recipient.id == interlocutorId || item.sender.id == interlocutorId && item.recipient.id == accountId) {
@@ -197,9 +197,9 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
             }
         });
         return dialogueMessages;
-    };
+    }
 
-    this.addMessage = function (senderId, recipientId, text) {
+    function addMessage(senderId, recipientId, text) {
         var message = {
             "id": 666,
             "date": new Date(),
@@ -210,6 +210,14 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
         messages.push(message);
         updateDialogAvatar(message, senderId);
         return message;
+    }
+
+    return {
+        addMessage: addMessage,
+        getDialogueMessages: getDialogueMessages,
+        getLastMessages: getLastMessages,
+        loadMessages: loadMessages,
+        scrollElement: scrollElement
     }
 
 }]);

@@ -7,7 +7,7 @@
             <div class="chat-message">
                 <ul class="chat" style="padding: 0; list-style-type: none" ng-repeat="message in messageList | orderBy: 'date'">
                     <li ng-class="['clearfix', message.alignment]">
-                        <a href="#messages/{{message.interlocutor.id}}" title="Send message">
+                        <a href="messages/{{message.interlocutor.id}}" title="Send message">
                             <span ng-class="['chat-img', 'pull-' + message.alignment]">
                             <ng-letter-avatar data={{message.avatar}} shape="round"></ng-letter-avatar>
                             </span>

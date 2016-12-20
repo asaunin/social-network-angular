@@ -1,6 +1,7 @@
 <!doctype html>
 <html ng-app="benchmates">
 <head>
+    <base href="/">
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>BenthMates</title>
 
@@ -35,7 +36,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-click="onClickTab('settings')"><a href="#/settings"><span class="glyphicon glyphicon-user"></span> My profile</a></li>
+                    <li ng-click="onClickTab('settings')"><a href="/settings"><span class="glyphicon glyphicon-user"></span> My profile</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 </ul>
             </div>
@@ -50,7 +51,7 @@
                 <!--<form action="/logout" method="get">-->
                 <ul class="nav nav-pills nav-stacked">
                     <li ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.name)}" ng-click="onClickTab(tab.name)">
-                        <a href=#{{tab.name}}>{{tab.title}}</a>
+                        <a href={{tab.name}}>{{tab.title}}</a>
                     </li>
                 </ul>
                 <!--</form>-->
