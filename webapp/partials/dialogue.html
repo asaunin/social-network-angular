@@ -1,7 +1,7 @@
 <div class="container-fluid col-sm-12 view-container" ng-controller="dialogueController" ng-submit="sendMessage()">
     <div class="panel panel-default">
         <div class="panel-heading">
-            Conversation with <strong>{{$scope.profile.getName()}}</strong>
+            Conversation with <a href="#/profile/{{profile.id}}"><strong>{{profile.getName()}}</strong></a>
         </div>
         <div class="panel-body" id="chat" style="max-height: 64vh; min-height: 64vh; overflow-y: auto;">
             <div class="chat-message">

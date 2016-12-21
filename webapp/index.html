@@ -36,7 +36,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-click="onClickTab('settings')"><a href="/settings"><span class="glyphicon glyphicon-user"></span> My profile</a></li>
+                    <li ng-click="onClickTab('settings')"><a href="#/settings"><span class="glyphicon glyphicon-user"></span> My profile</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 </ul>
             </div>
@@ -45,13 +45,13 @@
     <div class="row content">
         <div class="col-sm-2">
             <div class="well">
-                <img class="img-rounded img-responsive center-block" alt="user_pic" src="/img/deactivated_200.gif">
+                <img class="img-rounded img-responsive center-block" alt="user_pic"  ng-src="{{account.getProfileAvatar()}}">
             </div>
             <div class="well" id="tabs">
                 <!--<form action="/logout" method="get">-->
                 <ul class="nav nav-pills nav-stacked">
                     <li ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.name)}" ng-click="onClickTab(tab.name)">
-                        <a href={{tab.name}}>{{tab.title}}</a>
+                        <a href=#/{{tab.name}}>{{tab.title}}</a>
                     </li>
                 </ul>
                 <!--</form>-->

@@ -32,14 +32,17 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
             controller: 'settingsController'
         })
         .otherwise(
-            {redirectTo: 'profile'}
-        );
+            {redirectTo: '/profile'
+            }
+        )
+    ;
 
-    if (window.history && window.history.pushState) {
-        $locationProvider.html5Mode({
-            enabled: true,
-            requireBase: false
-        });
-    }
+    // if (window.history && window.history.pushState) {
+    //     $locationProvider.html5Mode({
+    //         enabled: true,
+    //         requireBase: false
+    //     });
+    // }
 
 }]);
+

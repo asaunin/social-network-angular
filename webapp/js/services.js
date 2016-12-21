@@ -1,6 +1,6 @@
 var app = angular.module('benchmates');
 
-app.service('UserService', ['$http', function ($http) {
+app.service('UserService', ['$http', '$location', function ($http, $location) {
 
     var users = [];
     var friends = [];
@@ -41,6 +41,22 @@ app.service('UserService', ['$http', function ($http) {
         prototype.hasFriend = function (id) {
             return (prototype.friends.indexOf(id) != -1);
         };
+        prototype.getProfileAvatar = function () {
+            if (prototype.avatar == undefined) {
+                prototype.avatar = '/img/avatars/undefined.gif';
+                return prototype.avatar;
+            } else {
+                return prototype.avatar;
+            }
+        };
+        prototype.getAvatar = function () {
+            if (prototype.avatar == undefined || prototype.avatar == '/img/avatars/undefined.gif') {
+                return prototype.getName();
+            } else {
+                return prototype.avatar;
+            }
+        };
+
         return prototype;
     }
 
@@ -59,6 +75,23 @@ app.service('UserService', ['$http', function ($http) {
             response.data.forEach(function (data) {
                 users.push(getUser(data));
             });
+        });
+    }
+
+    function loadAvatars() {
+        users.forEach(function (user) {
+            if (user.avatar == undefined) {
+                var url = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/img/avatars/' + user.id + '.jpg';
+                user.avatar = '/img/avatars/undefined.gif';
+                try {
+                    $http.get(url).then(function (response) {
+                        user.avatar = url;
+                    }).catch(function (err) {
+                        // console.warn(err);
+                    });
+                } finally {
+                }
+            }
         });
     }
 
@@ -96,7 +129,8 @@ app.service('UserService', ['$http', function ($http) {
         getFriends: getFriends,
         getUsers: getUsers,
         loadFriends: loadFriends,
-        loadUsers: loadUsers
+        loadUsers: loadUsers,
+        loadAvatars: loadAvatars
     }
 
 }]);
@@ -107,12 +141,12 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
 
     function updateLastMessageAvatar(message, accountId) {
         if (accountId == message.sender.id) {
-            message.alignment = 'left';
-            message.avatar = message.recipient.getName();
+            message.alignment = 'right';
+            message.avatar = message.recipient.getAvatar();
             message.interlocutor = message.recipient;
         } else {
-            message.alignment = 'right';
-            message.avatar = message.sender.getName();
+            message.avatar = message.sender.getAvatar();
+            message.alignment = 'left';
             message.interlocutor = message.sender;
         }
     }
@@ -124,7 +158,7 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
             message.alignment = 'left';
         }
         message.interlocutor = message.sender;
-        message.avatar = message.sender.getName();
+        message.avatar = message.sender.getAvatar();
     }
 
     function scrollElement(id) {

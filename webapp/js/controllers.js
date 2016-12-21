@@ -9,6 +9,7 @@ app.controller('tabController', ['$q', '$scope', '$route', 'UserService', 'Messa
         p1 = UserService.loadUsers().then(function () {
             p2 = MessageService.loadMessages();
             p3 = UserService.loadFriends();
+            UserService.loadAvatars();
         });
 
         $q.all([p1, p2, p3]).then(function (data) {
