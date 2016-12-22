@@ -42,7 +42,7 @@ app.service('UserService', ['$http', '$location', function ($http, $location) {
             return (prototype.friends.indexOf(id) != -1);
         };
         prototype.getProfileAvatar = function () {
-            if (prototype.avatar == undefined) {
+            if (prototype.avatar === undefined) {
                 prototype.avatar = '/img/avatars/undefined.gif';
                 return prototype.avatar;
             } else {
@@ -50,7 +50,7 @@ app.service('UserService', ['$http', '$location', function ($http, $location) {
             }
         };
         prototype.getAvatar = function () {
-            if (prototype.avatar == undefined || prototype.avatar == '/img/avatars/undefined.gif') {
+            if (prototype.avatar === undefined || prototype.avatar === '/img/avatars/undefined.gif') {
                 return prototype.getName();
             } else {
                 return prototype.avatar;
@@ -63,7 +63,7 @@ app.service('UserService', ['$http', '$location', function ($http, $location) {
     function getUserById(id) {
         var user = {};
         users.forEach(function (item) {
-            if (id == item.id) {
+            if (id === item.id) {
                 user = item;
             }
         });
@@ -80,7 +80,7 @@ app.service('UserService', ['$http', '$location', function ($http, $location) {
 
     function loadAvatars() {
         users.forEach(function (user) {
-            if (user.avatar == undefined) {
+            if (user.avatar === undefined) {
                 var url = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/img/avatars/' + user.id + '.jpg';
                 user.avatar = '/img/avatars/undefined.gif';
                 try {
@@ -140,7 +140,7 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
     var messages = [];
 
     function updateLastMessageAvatar(message, accountId) {
-        if (accountId == message.sender.id) {
+        if (accountId === message.sender.id) {
             message.alignment = 'right';
             message.avatar = message.recipient.getAvatar();
             message.interlocutor = message.recipient;
@@ -152,7 +152,7 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
     }
 
     function updateDialogAvatar(message, accountId) {
-        if (accountId == message.sender.id) {
+        if (accountId === message.sender.id) {
             message.alignment = 'right';
         } else {
             message.alignment = 'left';
@@ -183,14 +183,14 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
     function getLastMessages(accountId) {
         var lastMessages = [];
         messages.forEach(function (item) {
-            if (item.sender.id == accountId || item.recipient.id == accountId) {
+            if (item.sender.id === accountId || item.recipient.id === accountId) {
                 var lastMessage = null;
                 lastMessages.forEach(function (message) {
-                    if (message.sender == item.sender && message.recipient == item.recipient
-                        || message.recipient == item.sender && message.sender == item.recipient)
+                    if (message.sender === item.sender && message.recipient === item.recipient
+                        || message.recipient === item.sender && message.sender === item.recipient)
                         lastMessage = message;
                 });
-                if (lastMessage == null) {
+                if (lastMessage === null) {
                     var newMessage = {
                         "id": item.id,
                         "date": item.date,
@@ -218,7 +218,7 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
     function getDialogueMessages(accountId, interlocutorId) {
         var dialogueMessages = [];
         messages.forEach(function (item) {
-            if (item.sender.id == accountId && item.recipient.id == interlocutorId || item.sender.id == interlocutorId && item.recipient.id == accountId) {
+            if (item.sender.id === accountId && item.recipient.id === interlocutorId || item.sender.id === interlocutorId && item.recipient.id === accountId) {
                 var message = {
                     "id": item.id,
                     "date": item.date,

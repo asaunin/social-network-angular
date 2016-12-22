@@ -1,4 +1,4 @@
-<div class="container-fluid col-sm-12 view-container" ng-controller="usersController">
+<div class="container-fluid col-sm-12 view-container">
     <div class="panel panel-default ">
         <div class="panel-heading">
             <div class="pull-left" style="padding-top: 7px;">
@@ -31,14 +31,14 @@
                         <span class="glyphicon glyphicon-envelope"></span>
                     </a>
                     <a
-                            ng-class="userProfile == account ? 'link-disabled' : ''"
+                            ng-class="userProfile === account ? 'link-disabled' : ''"
                             ng-show="account.hasFriend(userProfile.id)"
                             title="Remove from friends"
                             ng-click="removeFriend(userProfile.id)">
                         <span class="glyphicon glyphicon-minus-sign"></span>
                     </a>
                     <a
-                            ng-class="userProfile == account ? 'link-disabled' : ''"
+                            ng-class="userProfile === account ? 'link-disabled' : ''"
                             ng-show="!account.hasFriend(userProfile.id)"
                             title="Add friend"
                             ng-click="addFriend(userProfile.id)">

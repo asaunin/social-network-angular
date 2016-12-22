@@ -1,4 +1,4 @@
-<div class="container-fluid col-sm-12 view-container" ng-controller="profileController">
+<div class="container-fluid col-sm-12 view-container">
     <div class="panel panel-default">
         <div class="panel-heading">
             <strong>{{profile.getName()}}</strong>
@@ -18,11 +18,11 @@
             </tr>
             <tr>
                 <td>Email:</td>
-                <td><span ng-if="profile.hasFriend(account.id) || account.id == profile.id">{{profile.email}}</span></td>
+                <td><span ng-if="profile.hasFriend(account.id) || account.id === profile.id">{{profile.email}}</span></td>
             </tr>
             <tr>
                 <td>Phone:</td>
-                <td><span ng-if="profile.hasFriend(account.id) || account.id == profile.id">{{profile.phone}}</span></td>
+                <td><span ng-if="profile.hasFriend(account.id) || account.id === profile.id">{{profile.phone}}</span></td>
             </tr>
             <tr>
                 <td>Sex:</td>

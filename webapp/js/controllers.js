@@ -1,53 +1,68 @@
 var app = angular.module('benchmates');
 
-app.controller('tabController', ['$q', '$scope', '$route', 'UserService', 'MessageService',
-    function ($q, $scope, $route, UserService, MessageService) {
+app.controller('tabController', ['$q', '$scope', '$route', '$location', 'UserService', 'MessageService',
+    function ($q, $scope, $route, $location, UserService, MessageService) {
 
         $scope.accountId = 0;
 
-        var p1, p2, p3;
+        $scope.tabs = [{
+            link: 'profile',
+            name: 'profile',
+            title: 'Profile',
+            visible: true
+        }, {
+            link: 'friends',
+            name: 'friends',
+            title: 'Friends',
+            visible: true
+        }, {
+            link: 'users',
+            name: 'users',
+            title: 'Users',
+            visible: true
+        }, {
+            link: 'messages',
+            name: 'messages',
+            title: 'Messages',
+            visible: true
+        }, {
+            link: 'dialogs',
+            name: 'messages',
+            title: 'Dialogs',
+            visible: false
+        }, {
+            link: 'settings',
+            name: 'profile',
+            title: 'Settings',
+            visible: false
+        }];
+
+        var path = $location.$$path.split('/')[1];
+        $scope.tabs.forEach(function (tab) {
+           if (path === tab.link) {
+               $scope.activeTab = tab.name;
+           }
+        });
+        if ($scope.activeTab === undefined || $scope.activeTab === '') {
+            $scope.activeTab = 'profile';
+        }
+
+        var p1, p2, p3, p4;
         p1 = UserService.loadUsers().then(function () {
             p2 = MessageService.loadMessages();
             p3 = UserService.loadFriends();
-            UserService.loadAvatars();
+            p4 = UserService.loadAvatars();
+            $q.all([p2, p3, p4]).then(function (data) {
+                $scope.accountId = 1;
+                $scope.account = UserService.getUserById($scope.accountId);
+                $scope.reloadRoute = function () {
+                    $route.reload();
+                }
+            });
         });
 
-        $q.all([p1, p2, p3]).then(function (data) {
-            $scope.accountId = 1;
-            $scope.account = UserService.getUserById($scope.accountId);
-            $scope.reloadRoute = function () {
-                $route.reload();
-            }
-        });
-
-        $scope.currentTabName = 'profile';
-
-        $scope.tabs = [{
-            name: 'profile',
-            title: 'Profile'
-        }, {
-            name: 'friends',
-            title: 'Friends'
-        }, {
-            name: 'users',
-            title: 'Users'
-        }, {
-            name: 'messages',
-            title: 'Messages'
-        }];
-
-        $scope.onClickTab = function (tabName) {
-            $scope.currentTabName = tabName;
-        };
-
-        $scope.isActiveTab = function (tabName) {
-            if ($scope.currentTabName == 'settings' && tabName == 'profile') {
-                return true;
-            }
-            if ($scope.currentTabName == 'dialogue' && tabName == 'messages') {
-                return true;
-            }
-            return $scope.currentTabName == tabName;
+        $scope.onClickTab = function(name) {
+            $scope.activeTab = name;
         };
 
     }]);
@@ -55,7 +70,7 @@ app.controller('tabController', ['$q', '$scope', '$route', 'UserService', 'Messa
 app.controller('profileController', ['UserService', '$http', '$scope', '$routeParams',
     function (UserService, $http, $scope, $routeParams) {
 
-        $scope.profile = UserService.getUserById($routeParams.profileId == undefined ? $scope.accountId : $routeParams.profileId);
+        $scope.profile = UserService.getUserById($routeParams.profileId === undefined ? $scope.accountId : $routeParams.profileId);
 
     }]);
 
@@ -97,7 +112,7 @@ app.controller('usersController', ['UserService', 'filterFilter', '$http', '$sco
     function (UserService, filterFilter, $http, $scope, $route, $location) {
 
         function updateList() {
-            if ($location.$$path == '/users') {
+            if ($location.$$path.split('/')[1] === '/users') {
                 $scope.userList = UserService.getUsers();
             } else {
                 $scope.userList = UserService.getFriends($scope.account);
@@ -144,7 +159,7 @@ app.filter('startFrom', function () {
 
 app.filter('dateOrTime', function ($filter) {
     return function (input) {
-        if (input == null) {
+        if (input === null) {
             return "";
         }
         var today = new Date();
@@ -168,7 +183,7 @@ app.controller('messagesController', ['UserService', 'MessageService', '$http', 
 app.controller('dialogueController', ['UserService', 'MessageService', '$http', '$scope', '$routeParams',
     function (UserService, MessageService, $http, $scope, $routeParams) {
 
-        $scope.profile = UserService.getUserById($routeParams.profileId == undefined ? $scope.accountId : $routeParams.profileId);
+        $scope.profile = UserService.getUserById($routeParams.profileId === undefined ? $scope.accountId : $routeParams.profileId);
 
         $scope.messageList = MessageService.getDialogueMessages($scope.accountId, $scope.profile.id);
 
