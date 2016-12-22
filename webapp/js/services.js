@@ -1,9 +1,9 @@
 var app = angular.module('benchmates');
 
-app.service('UserService', ['$http', '$location', function ($http, $location) {
+app.service('UserService', ['$http', '$location', '$rootScope', function ($http, $location, $rootScope) {
 
     var users = [];
-    var friends = [];
+    var friendsLoaded = false;
 
     function getUser(data) {
         var prototype = data;
@@ -96,12 +96,20 @@ app.service('UserService', ['$http', '$location', function ($http, $location) {
     }
 
     function loadFriends() {
-        return $http.get('/data/friends.json').then(function (response) {
-            response.data.forEach(function (data) {
-                var user = getUserById(data.userid);
-                user.addFriend(data.friendid);
+        if (!friendsLoaded) {
+            return $http.get('/data/friends.json').then(function (response) {
+                response.data.forEach(function (data) {
+                    var user = getUserById(data.userid);
+                    user.addFriend(data.friendid);
+                });
+                friendsLoaded = true;
+                $rootScope.$broadcast("loadFriendsSucceed");
+            }, function () {
+                $rootScope.$broadcast("loadFriendsFailed");
             });
-        });
+        } else {
+            $rootScope.$broadcast("loadFriendsDoneBefore");
+        }
     }
 
     function getUsers() {
@@ -135,9 +143,10 @@ app.service('UserService', ['$http', '$location', function ($http, $location) {
 
 }]);
 
-app.service('MessageService', ['UserService', '$http', '$timeout', function (UserService, $http, $timeout) {
+app.service('MessageService', ['UserService', '$http', '$timeout', '$rootScope', function (UserService, $http, $timeout, $rootScope) {
 
     var messages = [];
+    var messagesLoaded = false;
 
     function updateLastMessageAvatar(message, accountId) {
         if (accountId === message.sender.id) {
@@ -169,15 +178,23 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
     }
 
     function loadMessages() {
-        return $http.get('/data/messages.json').then(function (response) {
-            response.data.forEach(function (data) {
-                var message = data;
-                message.date = new Date(Date.parse(data.date));
-                message.sender = UserService.getUserById(data.sender);
-                message.recipient = UserService.getUserById(data.recipient);
-                messages.push(message);
+        if (!messagesLoaded) {
+            $http.get('/data/messages.json').then(function (response) {
+                response.data.forEach(function (data) {
+                    var message = data;
+                    message.date = new Date(Date.parse(data.date));
+                    message.sender = UserService.getUserById(data.sender);
+                    message.recipient = UserService.getUserById(data.recipient);
+                    messages.push(message);
+                });
+                messagesLoaded = true;
+                $rootScope.$broadcast("loadMessagesSucceed");
+            }, function () {
+                $rootScope.$broadcast("loadMessagesFailed");
             });
-        });
+        } else {
+            $rootScope.$broadcast("loadMessagesDoneBefore");
+        }
     }
 
     function getLastMessages(accountId) {
@@ -215,8 +232,8 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
         return lastMessages;
     }
 
-    function getDialogueMessages(accountId, interlocutorId) {
-        var dialogueMessages = [];
+    function getDialogMessages(accountId, interlocutorId) {
+        var dialogMessages = [];
         messages.forEach(function (item) {
             if (item.sender.id === accountId && item.recipient.id === interlocutorId || item.sender.id === interlocutorId && item.recipient.id === accountId) {
                 var message = {
@@ -227,10 +244,10 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
                     "body": item.body
                 };
                 updateDialogAvatar(message, accountId);
-                dialogueMessages.push(message);
+                dialogMessages.push(message);
             }
         });
-        return dialogueMessages;
+        return dialogMessages;
     }
 
     function addMessage(senderId, recipientId, text) {
@@ -248,7 +265,7 @@ app.service('MessageService', ['UserService', '$http', '$timeout', function (Use
 
     return {
         addMessage: addMessage,
-        getDialogueMessages: getDialogueMessages,
+        getDialogMessages: getDialogMessages,
         getLastMessages: getLastMessages,
         loadMessages: loadMessages,
         scrollElement: scrollElement

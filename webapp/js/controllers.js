@@ -3,7 +3,7 @@ var app = angular.module('benchmates');
 app.controller('tabController', ['$q', '$scope', '$route', '$location', 'UserService', 'MessageService',
     function ($q, $scope, $route, $location, UserService, MessageService) {
 
-        $scope.accountId = 0;
+        $scope.accountId = 1;
 
         $scope.tabs = [{
             link: 'profile',
@@ -39,29 +39,21 @@ app.controller('tabController', ['$q', '$scope', '$route', '$location', 'UserSer
 
         var path = $location.$$path.split('/')[1];
         $scope.tabs.forEach(function (tab) {
-           if (path === tab.link) {
-               $scope.activeTab = tab.name;
-           }
+            if (path === tab.link) {
+                $scope.activeTab = tab.name;
+            }
         });
         if ($scope.activeTab === undefined || $scope.activeTab === '') {
             $scope.activeTab = 'profile';
         }
 
-        var p1, p2, p3, p4;
-        p1 = UserService.loadUsers().then(function () {
-            p2 = MessageService.loadMessages();
-            p3 = UserService.loadFriends();
+        // TODO Solve synchronous wait problem
+        UserService.loadUsers().then(function () {
             p4 = UserService.loadAvatars();
-            $q.all([p2, p3, p4]).then(function (data) {
-                $scope.accountId = 1;
-                $scope.account = UserService.getUserById($scope.accountId);
-                $scope.reloadRoute = function () {
-                    $route.reload();
-                }
-            });
+            $scope.account = UserService.getUserById($scope.accountId);
         });
 
-        $scope.onClickTab = function(name) {
+        $scope.onClickTab = function (name) {
             $scope.activeTab = name;
         };
 
@@ -70,7 +62,8 @@ app.controller('tabController', ['$q', '$scope', '$route', '$location', 'UserSer
 app.controller('profileController', ['UserService', '$http', '$scope', '$routeParams',
     function (UserService, $http, $scope, $routeParams) {
 
-        $scope.profile = UserService.getUserById($routeParams.profileId === undefined ? $scope.accountId : $routeParams.profileId);
+        var id = $routeParams.profileId === undefined ? $scope.accountId : parseInt($routeParams.profileId);
+        $scope.profile = UserService.getUserById(id);
 
     }]);
 
@@ -108,27 +101,61 @@ app.controller('settingsController', ['UserService', '$http', '$scope',
 
     }]);
 
-app.controller('usersController', ['UserService', 'filterFilter', '$http', '$scope', '$route', '$location',
+app.controller('friendsController', ['UserService', 'filterFilter', '$http', '$scope', '$route', '$location',
     function (UserService, filterFilter, $http, $scope, $route, $location) {
 
-        function updateList() {
-            if ($location.$$path.split('/')[1] === '/users') {
-                $scope.userList = UserService.getUsers();
-            } else {
-                $scope.userList = UserService.getFriends($scope.account);
-            }
+        $scope.userList = [];
+
+        $scope.$on('loadFriendsSucceed', getFriends);
+        $scope.$on('loadFriendsDoneBefore', getFriends);
+
+        function getFriends() {
+            $scope.userList = UserService.getFriends($scope.account);
         }
 
-        updateList();
+        UserService.loadFriends();
 
         $scope.addFriend = function (friendId) {
             $scope.account.addFriend(friendId);
-            updateList();
+            getFriends($scope.account);
         };
 
         $scope.removeFriend = function (friendId) {
             $scope.account.removeFriend(friendId);
-            updateList();
+            getFriends($scope.account);
+        };
+
+        // pagination controls
+        $scope.currentPage = 1;
+        $scope.totalItems = $scope.userList.length;
+        $scope.entryLimit = 15; // items per page
+        $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+
+        // $watch search to update pagination
+        $scope.$watch('userSearch', function (newVal, oldVal) {
+            $scope.filtered = filterFilter($scope.userList, newVal);
+            $scope.totalItems = $scope.filtered.length;
+            $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+            $scope.currentPage = 1;
+        }, true);
+
+    }]);
+
+app.controller('usersController', ['UserService', 'filterFilter', '$http', '$scope', '$route', '$location',
+    function (UserService, filterFilter, $http, $scope, $route, $location) {
+
+        function getUsers() {
+            $scope.userList = UserService.getUsers();
+        }
+
+        getUsers();
+
+        $scope.addFriend = function (friendId) {
+            $scope.account.addFriend(friendId);
+        };
+
+        $scope.removeFriend = function (friendId) {
+            $scope.account.removeFriend(friendId);
         };
 
         // pagination controls
@@ -163,31 +190,44 @@ app.filter('dateOrTime', function ($filter) {
             return "";
         }
         var today = new Date();
-        today.setHours(0,0,0,0);
+        today.setHours(0, 0, 0, 0);
         if (input.getTime() >= today.getTime()) {
-            return $filter('date') (new Date(input), "HH:mm");
+            return $filter('date')(new Date(input), "HH:mm");
         }
-        return $filter('date') (new Date(input), "dd.MM.yyyy");
+        return $filter('date')(new Date(input), "dd.MM.yyyy");
     };
 });
 
 app.controller('messagesController', ['UserService', 'MessageService', '$http', '$scope',
     function (UserService, MessageService, $http, $scope) {
 
-        $scope.messageList = MessageService.getLastMessages($scope.accountId);
+        $scope.$on('loadMessagesSucceed', getLastMessages);
+        $scope.$on('loadMessagesDoneBefore', getLastMessages);
 
-        MessageService.scrollElement("chat");
+        function getLastMessages() {
+            $scope.messageList = MessageService.getLastMessages($scope.accountId);
+            MessageService.scrollElement("chat");
+        }
+
+        MessageService.loadMessages();
 
     }]);
 
-app.controller('dialogueController', ['UserService', 'MessageService', '$http', '$scope', '$routeParams',
+app.controller('dialogController', ['UserService', 'MessageService', '$http', '$scope', '$routeParams',
     function (UserService, MessageService, $http, $scope, $routeParams) {
 
-        $scope.profile = UserService.getUserById($routeParams.profileId === undefined ? $scope.accountId : $routeParams.profileId);
+        $scope.$on('loadMessagesSucceed', getDialogMessages);
+        $scope.$on('loadMessagesDoneBefore', getDialogMessages);
 
-        $scope.messageList = MessageService.getDialogueMessages($scope.accountId, $scope.profile.id);
+        function getDialogMessages() {
+            $scope.messageList = MessageService.getDialogMessages($scope.accountId, $scope.profile.id);
+            MessageService.scrollElement("chat");
+        }
 
-        MessageService.scrollElement("chat");
+        var id = $routeParams.profileId === undefined ? $scope.accountId : parseInt($routeParams.profileId);
+        $scope.profile = UserService.getUserById(id);
+
+        MessageService.loadMessages();
 
         $scope.sendMessage = function () {
             var message = MessageService.addMessage($scope.accountId, $scope.profile.id, $scope.messageText);
