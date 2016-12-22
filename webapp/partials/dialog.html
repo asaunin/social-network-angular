@@ -26,13 +26,13 @@
             </div>
         </div>
         <div class="panel-footer">
-            <form name="dialogueForm" role="form">
+            <form name="dialogForm" role="form">
                 <div class="form-group">
                     <textarea class="form-control" rows="3" ng-required="true" maxlength="255" id="messageBody"
                               name="messageBody" ng-model="messageText"
                               ></textarea>
                 </div>
-                <input type="submit" value="Send" ng-class="['btn btn-primary', dialogueForm.$valid ? '' : 'disabled']">
+                <input type="submit" value="Send" ng-class="['btn btn-primary', dialogForm.$valid ? '' : 'disabled']">
             </form>
         </div>
     </div>

@@ -20,12 +20,12 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
             controller: 'messagesController'
         })
         .when('/messages/:profileId', {
-            templateUrl: 'partials/dialogue.html',
-            controller: 'dialogueController'
+            templateUrl: 'partials/dialog.html',
+            controller: 'dialogController'
         })
         .when('/friends', {
             templateUrl: 'partials/users.html',
-            controller: 'usersController'
+            controller: 'friendsController'
         })
         .when('/settings', {
             templateUrl: 'partials/settings.html',
