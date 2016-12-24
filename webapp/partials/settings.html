@@ -2,60 +2,58 @@
 <div class="container-fluid col-sm-12 view-container" ng-submit="userForm.$valid && updateAccount()">
     <div class="panel panel-default ">
         <div class="panel-heading">
-            <strong>{{editableAccount.getName()}}</strong>
+            <strong>Profile settings</strong>
         </div>
         <div class="panel-body" style="background: #ffffff">
             <form class="form-horizontal" name="userForm" novalidate>
-                <label>Contact information:</label>
-                <div class="form-group">
+                <div class="form-group" show-errors="{ showSuccess: true }">
                     <label class="col-md-4 control-label">First Name</label>
                     <div class="col-md-4 inputGroupContainer">
-                        <div class="input-group" show-errors='{showSuccess: true}'>
+                        <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                             <input ng-model="editableAccount.first_name" name="first_name" placeholder="First name"
                                    class="form-control" type="text" required
                                    maxlength="255" value='{{editableAccount.first_name}}'>
                         </div>
-                        <p class="help-block" ng-if="userForm.first_name.$error.required">First name is required</p>
+                        <p ng-show="userForm.first_name.$error.required" class="help-block">First name is required</p>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" show-errors="{ showSuccess: true }">
                     <label class="col-md-4 control-label">Last Name</label>
                     <div class="col-md-4">
-                        <div class="input-group" show-errors='{showSuccess: true}'>
+                        <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                             <input ng-model="editableAccount.last_name" name="last_name" placeholder="Last name"
                                    class="form-control" type="text" required maxlength="255"
                                    value='{{editableAccount.last_name}}'>
                         </div>
-                        <p class="help-block" ng-if="userForm.last_name.$error.required">Last name is required</p>
+                        <p ng-show="userForm.last_name.$error.required" class="help-block">Last name is required</p>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" show-errors="{ showSuccess: true }">
                     <label class="col-md-4 control-label">E-Mail</label>
                     <div class="col-md-4">
-                        <div class="input-group" show-errors='{showSuccess: true}'>
+                        <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                             <input ng-model="editableAccount.email" name="email" placeholder="E-mail"
                                    class="form-control" type="email" required maxlength="255"
                                    value='{{editableAccount.email}}'>
                         </div>
-                        <p class="help-block" ng-if="userForm.email.$error.required">The user's email is required</p>
-                        <p class="help-block" ng-if="userForm.email.$error.email">The email address is invalid</p>
+                        <p ng-show="userForm.email.$error.required" class="help-block" >The user's email is required</p>
+                        <p ng-show="userForm.email.$error.email" class="help-block" >The email address is invalid</p>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" show-errors="{ showSuccess: true }">
                     <label class="col-md-4 control-label">Phone</label>
                     <div class="col-md-4">
-                        <div class="input-group" show-errors='{showSuccess: true}'>
+                        <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
                             <input type="tel" ng-model="editableAccount.phone" name="phone" id="phone"
                                    placeholder="+79111234567"
                                    class="form-control" required value='{{editableAccount.phone}}'
                                    ng-pattern="/^\+7[0-9]{10}$/">
                         </div>
-                        <p class="help-block" ng-if="userForm.phone.$error.required || userForm.phone.$error.pattern">
-                            Valid phone number is required</p>
+                        <p ng-show="userForm.phone.$error.required" class="help-block">Valid phone number is required</p>
                     </div>
                 </div>
                 <div class="form-group">
@@ -87,7 +85,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label"></label>
                     <div class="col-md-4">
-                        <input type="submit" ng-class="['btn btn-primary', userForm.$valid ? '' : 'disabled']"
+                        <input type="submit" ng-class="['btn btn-primary', userForm.$valid && userForm.$dirty ? '' : 'disabled']"
                                value="Submit information">
                     </div>
                 </div>
