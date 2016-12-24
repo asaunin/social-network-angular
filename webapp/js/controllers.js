@@ -70,10 +70,18 @@ app.controller('profileController', ['UserService', '$http', '$scope', '$routePa
 app.controller('settingsController', ['UserService', '$http', '$scope',
     function (UserService, $http, $scope) {
 
+        // Disable weekend selection
+        function disabled(data) {
+            var date = data.date,
+                mode = data.mode;
+            return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        }
+
         $scope.editableAccount = Object.assign({}, $scope.account);
 
         $scope.updateAccount = function () {
             $scope.account.update($scope.editableAccount);
+            $scope.$broadcast('show-errors-reset');
         };
 
         $scope.chooseBirthDate = function () {
@@ -91,13 +99,6 @@ app.controller('settingsController', ['UserService', '$http', '$scope',
             minDate: new Date(1900, 1, 1),
             startingDay: 1
         };
-
-        // Disable weekend selection
-        function disabled(data) {
-            var date = data.date,
-                mode = data.mode;
-            return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
-        }
 
     }]);
 
