@@ -4,6 +4,7 @@ app.controller('tabController', ['$q', '$scope', '$route', '$location', 'UserSer
     function ($q, $scope, $route, $location, UserService, MessageService) {
 
         $scope.accountId = 1;
+        $scope.isLoadingData = true;
 
         $scope.tabs = [{
             link: 'profile',
@@ -47,10 +48,16 @@ app.controller('tabController', ['$q', '$scope', '$route', '$location', 'UserSer
             $scope.activeTab = 'profile';
         }
 
-        // TODO Solve synchronous wait problem
+        var pm, pf, pa;
         UserService.loadUsers().then(function () {
-            p4 = UserService.loadAvatars();
-            $scope.account = UserService.getUserById($scope.accountId);
+            pa = UserService.loadAvatars();
+            pf = UserService.loadFriends();
+            pm = MessageService.loadMessages();
+            $q.all([pm, pf, pa]).then(function () {
+                $scope.account = UserService.getUserById($scope.accountId);
+                $scope.isLoadingData = false;
+                $route.reload();
+            });
         });
 
         $scope.onClickTab = function (name) {
@@ -62,6 +69,10 @@ app.controller('tabController', ['$q', '$scope', '$route', '$location', 'UserSer
 app.controller('profileController', ['UserService', '$http', '$scope', '$routeParams',
     function (UserService, $http, $scope, $routeParams) {
 
+        if ($scope.isLoadingData) {
+            return;
+        }
+
         var id = $routeParams.profileId === undefined ? $scope.accountId : parseInt($routeParams.profileId);
         $scope.profile = UserService.getUserById(id);
 
@@ -69,6 +80,10 @@ app.controller('profileController', ['UserService', '$http', '$scope', '$routePa
 
 app.controller('settingsController', ['UserService', '$http', '$scope',
     function (UserService, $http, $scope) {
+
+        if ($scope.isLoadingData) {
+            return;
+        }
 
         // Disable weekend selection
         function disabled(data) {
@@ -105,16 +120,11 @@ app.controller('settingsController', ['UserService', '$http', '$scope',
 app.controller('friendsController', ['UserService', 'filterFilter', '$http', '$scope', '$route', '$location',
     function (UserService, filterFilter, $http, $scope, $route, $location) {
 
-        $scope.userList = [];
-
-        $scope.$on('loadFriendsSucceed', getFriends);
-        $scope.$on('loadFriendsDoneBefore', getFriends);
-
-        function getFriends() {
-            $scope.userList = UserService.getFriends($scope.account);
+        if ($scope.isLoadingData) {
+            return;
         }
 
-        UserService.loadFriends();
+        $scope.userList = UserService.getFriends($scope.account);
 
         $scope.addFriend = function (friendId) {
             $scope.account.addFriend(friendId);
@@ -145,11 +155,11 @@ app.controller('friendsController', ['UserService', 'filterFilter', '$http', '$s
 app.controller('usersController', ['UserService', 'filterFilter', '$http', '$scope', '$route', '$location',
     function (UserService, filterFilter, $http, $scope, $route, $location) {
 
-        function getUsers() {
-            $scope.userList = UserService.getUsers();
+        if ($scope.isLoadingData) {
+            return;
         }
 
-        getUsers();
+        $scope.userList = UserService.getUsers();
 
         $scope.addFriend = function (friendId) {
             $scope.account.addFriend(friendId);
@@ -202,33 +212,27 @@ app.filter('dateOrTime', function ($filter) {
 app.controller('messagesController', ['UserService', 'MessageService', '$http', '$scope',
     function (UserService, MessageService, $http, $scope) {
 
-        $scope.$on('loadMessagesSucceed', getLastMessages);
-        $scope.$on('loadMessagesDoneBefore', getLastMessages);
-
-        function getLastMessages() {
-            $scope.messageList = MessageService.getLastMessages($scope.accountId);
-            MessageService.scrollElement("chat");
+        if ($scope.isLoadingData) {
+            return;
         }
 
-        MessageService.loadMessages();
+        $scope.messageList = MessageService.getLastMessages($scope.accountId);
+        MessageService.scrollElement("chat");
 
     }]);
 
 app.controller('dialogController', ['UserService', 'MessageService', '$http', '$scope', '$routeParams',
     function (UserService, MessageService, $http, $scope, $routeParams) {
 
-        $scope.$on('loadMessagesSucceed', getDialogMessages);
-        $scope.$on('loadMessagesDoneBefore', getDialogMessages);
-
-        function getDialogMessages() {
-            $scope.messageList = MessageService.getDialogMessages($scope.accountId, $scope.profile.id);
-            MessageService.scrollElement("chat");
+        if ($scope.isLoadingData) {
+            return;
         }
 
         var id = $routeParams.profileId === undefined ? $scope.accountId : parseInt($routeParams.profileId);
         $scope.profile = UserService.getUserById(id);
 
-        MessageService.loadMessages();
+        $scope.messageList = MessageService.getDialogMessages($scope.accountId, $scope.profile.id);
+        MessageService.scrollElement("chat");
 
         $scope.sendMessage = function () {
             var message = MessageService.addMessage($scope.accountId, $scope.profile.id, $scope.messageText);

@@ -3,11 +3,10 @@ var app = angular.module('benchmates');
 app.service('UserService', ['$http', '$location', '$rootScope', function ($http, $location, $rootScope) {
 
     var users = [];
-    var friendsLoaded = false;
 
     function getUser(data) {
         var prototype = data;
-        prototype.birth_date = new Date(Date.parse(data.birth_date));
+        prototype.birth_date = Date.parse(data.birth_date);
         prototype.friends = [];
         prototype.getSex = function () {
             switch (prototype.sex) {
@@ -96,20 +95,12 @@ app.service('UserService', ['$http', '$location', '$rootScope', function ($http,
     }
 
     function loadFriends() {
-        if (!friendsLoaded) {
-            return $http.get('/data/friends.json').then(function (response) {
-                response.data.forEach(function (data) {
-                    var user = getUserById(data.userid);
-                    user.addFriend(data.friendid);
-                });
-                friendsLoaded = true;
-                $rootScope.$broadcast("loadFriendsSucceed");
-            }, function () {
-                $rootScope.$broadcast("loadFriendsFailed");
+        return $http.get('/data/friends.json').then(function (response) {
+            response.data.forEach(function (data) {
+                var user = getUserById(data.userid);
+                user.addFriend(data.friendid);
             });
-        } else {
-            $rootScope.$broadcast("loadFriendsDoneBefore");
-        }
+        })
     }
 
     function getUsers() {
@@ -146,7 +137,6 @@ app.service('UserService', ['$http', '$location', '$rootScope', function ($http,
 app.service('MessageService', ['UserService', '$http', '$timeout', '$rootScope', function (UserService, $http, $timeout, $rootScope) {
 
     var messages = [];
-    var messagesLoaded = false;
 
     function updateLastMessageAvatar(message, accountId) {
         if (accountId === message.sender.id) {
@@ -178,23 +168,15 @@ app.service('MessageService', ['UserService', '$http', '$timeout', '$rootScope',
     }
 
     function loadMessages() {
-        if (!messagesLoaded) {
-            $http.get('/data/messages.json').then(function (response) {
-                response.data.forEach(function (data) {
-                    var message = data;
-                    message.date = new Date(Date.parse(data.date));
-                    message.sender = UserService.getUserById(data.sender);
-                    message.recipient = UserService.getUserById(data.recipient);
-                    messages.push(message);
-                });
-                messagesLoaded = true;
-                $rootScope.$broadcast("loadMessagesSucceed");
-            }, function () {
-                $rootScope.$broadcast("loadMessagesFailed");
+        return $http.get('/data/messages.json').then(function (response) {
+            response.data.forEach(function (data) {
+                var message = data;
+                message.date = new Date(Date.parse(data.date));
+                message.sender = UserService.getUserById(data.sender);
+                message.recipient = UserService.getUserById(data.recipient);
+                messages.push(message);
             });
-        } else {
-            $rootScope.$broadcast("loadMessagesDoneBefore");
-        }
+        });
     }
 
     function getLastMessages(accountId) {
