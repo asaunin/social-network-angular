@@ -42,6 +42,11 @@ label {
     font-weight: 600
 }
 
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .pagination {
     margin-top: 0;
 }

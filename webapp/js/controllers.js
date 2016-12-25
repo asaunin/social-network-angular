@@ -92,6 +92,14 @@ app.controller('profileController', ['UserService', '$http', '$scope', '$routePa
         var id = $routeParams.profileId === undefined ? $scope.accountId : parseInt($routeParams.profileId);
         $scope.profile = UserService.getUserById(id);
 
+        $scope.addFriend = function (friendId) {
+            $scope.account.addFriend(friendId);
+        };
+
+        $scope.removeFriend = function (friendId) {
+            $scope.account.removeFriend(friendId);
+        };
+
     }]);
 
 app.controller('settingsController', ['UserService', '$http', '$scope',

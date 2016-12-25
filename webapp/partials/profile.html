@@ -6,18 +6,33 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-5">
-                    <h4>General information</h4>
-                    <div class="col-lg-6 text-muted">
-                        <p>First name:</p>
-                        <p>Last name:</p>
-                        <p>Sex:</p>
-                        <p>Date of birth:</p>
+                    <div class="row">
+                        <h4>General information</h4>
+                        <div class="col-lg-6 text-muted">
+                            <p>First name:</p>
+                            <p>Last name:</p>
+                            <p>Sex:</p>
+                            <p>Date of birth:</p>
+                        </div>
+                        <div class="col-lg-3">
+                            <p>{{profile.first_name}}</p>
+                            <p>{{profile.last_name}}</p>
+                            <p>{{profile.getSex()}}</p>
+                            <p>{{profile.birth_date | date:"dd.MM.yyyy"}}</p>
+                        </div>
                     </div>
-                    <div class="col-lg-6">
-                        <p>{{profile.first_name}}</p>
-                        <p>{{profile.last_name}}</p>
-                        <p>{{profile.getSex()}}</p>
-                        <p>{{profile.birth_date | date:"dd.MM.yyyy"}}</p>
+                    <div class="row">
+                        <h4>Contacts</h4>
+                        <div class="col-lg-4 text-muted">
+                            <p>Email:</p>
+                            <p>Phone:</p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p ng-show="profile.hasFriend(account.id) || account.id === profile.id">
+                                {{profile.email}}</p>
+                            <p ng-show="profile.hasFriend(account.id) || account.id === profile.id">
+                                {{profile.phone}}</p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -26,24 +41,33 @@
                     <p>Stock</p>
                     <p>Two smoking barrels</p>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-3" ng-hide="account === profile" align="center">
                     <img class="img-rounded img-responsive center-block" alt="user_pic" width="150" height="150"
-                         ng-src="{{profile.getProfileAvatar()}}" ng-hide="account === profile">
+                         ng-src="{{profile.getProfileAvatar()}}">
+                    <br>
+                    <p>
+                        <a href="#/messages/{{profile.id}}" role="button" class="btn btn-secondary btn-sm">
+                            <span class="glyphicon glyphicon-envelope"></span> Send message</a>
+                        <a role="button" class="btn btn-secondary btn-sm text-left"
+                           ng-class="userProfile === account ? 'link-disabled' : ''"
+                           ng-show="account.hasFriend(profile.id)"
+                           ng-click="removeFriend(profile.id)">
+                            <span class="glyphicon glyphicon-minus-sign" title=""></span> Remove friend
+                        </a>
+                        <a role="button" class="btn btn-secondary btn-sm"
+                           ng-class="userProfile === account ? 'link-disabled' : ''"
+                           ng-show="!account.hasFriend(profile.id)"
+                           ng-click="addFriend(profile.id)">
+                            <span class="glyphicon glyphicon-plus-sign" title=""></span> Add friend
+                        </a>
+                    </p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-5">
-                    <h4>Contacts</h4>
-                    <div class="col-lg-4 text-muted">
-                        <p>Email:</p>
-                        <p>Phone:</p>
-                    </div>
-                    <div class="col-lg-8">
-                        <p ng-show="profile.hasFriend(account.id) || account.id === profile.id">{{profile.email}}</p>
-                        <p ng-show="profile.hasFriend(account.id) || account.id === profile.id">{{profile.phone}}</p>
-                   </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
