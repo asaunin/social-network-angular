@@ -66,9 +66,13 @@ label {
     color: grey;
 }
 
-.table>tbody>tr>td {
+.table .border-bottom {
     border-top-style: none;
     border-bottom: 1px dotted lightgrey;
+}
+
+.table .borderless {
+    border: none;
 }
 
 .table .glyphicon-envelope {
@@ -84,6 +88,14 @@ label {
 .table .glyphicon-minus-sign {
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.link-gray-dark {
+    color: #333 !important
+}
+
+b, strong {
+    font-weight: 500;
 }
 
 .panel-body.users {
