@@ -38,14 +38,26 @@ app.controller('tabController', ['$q', '$scope', '$route', '$location', 'UserSer
             visible: false
         }];
 
+        function findTab(name) {
+            var tab;
+            $scope.tabs.forEach(function (t) {
+                if (t.name === name) {
+                    tab = t;
+                    return t;
+                }
+            });
+            return tab;
+        }
+
         var path = $location.$$path.split('/')[1];
         $scope.tabs.forEach(function (tab) {
             if (path === tab.link) {
-                $scope.activeTab = tab.name;
+                $scope.activeTab = tab;
             }
         });
-        if ($scope.activeTab === undefined || $scope.activeTab === '') {
-            $scope.activeTab = 'profile';
+
+        if ($scope.activeTab === undefined) {
+            $scope.activeTab = findTab('profile');
         }
 
         var pm, pf, pa;
@@ -61,8 +73,12 @@ app.controller('tabController', ['$q', '$scope', '$route', '$location', 'UserSer
         });
 
         $scope.onClickTab = function (name) {
-            $scope.activeTab = name;
+            $scope.activeTab = findTab(name);
         };
+
+        return {
+            findTab: findTab
+        }
 
     }]);
 
@@ -96,6 +112,7 @@ app.controller('settingsController', ['UserService', '$http', '$scope',
 
         $scope.updateAccount = function () {
             $scope.account.update($scope.editableAccount);
+            $scope.userForm.$setPristine();
             $scope.$broadcast('show-errors-reset');
         };
 

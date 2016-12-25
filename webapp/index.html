@@ -53,7 +53,7 @@
             <div class="well" id="tabs">
                 <!--<form action="/logout" method="get">-->
                 <ul class="nav nav-pills nav-stacked">
-                    <li ng-repeat="tab in tabs | filter: { visible : true }" ng-class="tab.name === activeTab ? 'active': ''"
+                    <li ng-repeat="tab in tabs | filter: { visible : true }" ng-class="tab.name === activeTab.name ? 'active': ''"
                         ng-click="onClickTab(tab.name)">
                         <a href=#/{{tab.name}}>{{tab.title}}</a>
                     </li>
