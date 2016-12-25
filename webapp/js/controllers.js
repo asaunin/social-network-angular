@@ -139,7 +139,7 @@ app.controller('friendsController', ['UserService', 'filterFilter', '$http', '$s
         // pagination controls
         $scope.currentPage = 1;
         $scope.totalItems = $scope.userList.length;
-        $scope.entryLimit = 15; // items per page
+        $scope.entryLimit = 10; // items per page
         $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
 
         // $watch search to update pagination
@@ -172,7 +172,7 @@ app.controller('usersController', ['UserService', 'filterFilter', '$http', '$sco
         // pagination controls
         $scope.currentPage = 1;
         $scope.totalItems = $scope.userList.length;
-        $scope.entryLimit = 15; // items per page
+        $scope.entryLimit = 10; // items per page
         $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
 
         // $watch search to update pagination

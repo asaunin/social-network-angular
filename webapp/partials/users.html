@@ -1,55 +1,55 @@
 <div class="container-fluid col-sm-12 view-container">
-    <div class="panel panel-default ">
+    <div class="panel panel-default">
         <div class="panel-heading">
-            <div class="pull-left">
-                <strong>Users</strong>
-            </div>
-            <div class="input-group input-group-sm">
+            <strong>Users</strong><div class="input-group input-group-sm search-text">
                 <input type="text" ng-model="userSearch" id="userSearch" class="form-control" placeholder="Search..."
                        value='{{searchText}}'>
                 <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </span>
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
             </div>
         </div>
-        <table class="table table-hover">
-            <tr ng-repeat="userProfile in userList | orderBy: '[first_name, last_name]' | filter : userSearch | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
-                <td class="col-md-5">
-                    <a href="#/profile/{{userProfile.id}}" ng-click="onClickTab('profile')" id="profile"
-                       title="View profile">
-                        {{userProfile.getName()}}
-                    </a>
-                </td>
-                <td class="col-md-3"> <!-- TODO: Replace by directive -->
-                    <span ng-show="userProfile.hasFriend(account.id)">{{userProfile.email}}</span>
-                </td>
-                <td class="col-md-1">
-                    <a href="#/messages/{{userProfile.id}}" id="dialog" title="Send message">
-                        <span class="glyphicon glyphicon-envelope"></span>
-                    </a>
-                    <a
-                            ng-class="userProfile === account ? 'link-disabled' : ''"
-                            ng-show="account.hasFriend(userProfile.id)"
-                            title="Remove from friends"
-                            ng-click="removeFriend(userProfile.id)">
-                        <span class="glyphicon glyphicon-minus-sign"></span>
-                    </a>
-                    <a
-                            ng-class="userProfile === account ? 'link-disabled' : ''"
-                            ng-show="!account.hasFriend(userProfile.id)"
-                            title="Add friend"
-                            ng-click="addFriend(userProfile.id)">
-                        <span class="glyphicon glyphicon-plus-sign"></span>
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div align="center">
-        <ul uib-pagination ng-model="currentPage" total-items="totalItems" page="currentPage" max-size="noOfPages"
-            items-per-page="entryLimit" first-text="&laquo;" last-text="&raquo;" direction-links="false"
-            boundary-links="true"></ul>
+        <div class="panel-body users" id="users">
+            <table class="table">
+                <tr ng-repeat="userProfile in userList | orderBy: '[first_name, last_name]' | filter : userSearch | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+                    <td class="col-md-1 text-center">
+                        <a href="#/profile/{{userProfile.id}}" ng-click="onClickTab('profile')">
+                            <ng-letter-avatar data={{userProfile.getAvatar()}} shape="round"></ng-letter-avatar>
+                        </a>
+                    </td>
+                    <td class="col-md-9">
+                        <a class="control-label" href="#/profile/{{userProfile.id}}" ng-click="onClickTab('profile')">
+                            <strong>{{userProfile.getName()}}</strong>
+                        </a><br>
+                        <span class="text-muted" ng-show="userProfile.hasFriend(account.id)">{{userProfile.email}}</span>
+                    </td>
+                    <td class="col-md-2">
+                        <a href="#/messages/{{userProfile.id}}" role="button" class="btn btn-secondary btn-sm">
+                            <span class="glyphicon glyphicon-envelope"></span> Send message
+                        </a>
+                        <br>
+                        <a role="button" class="btn btn-secondary btn-sm text-left"
+                                ng-class="userProfile === account ? 'link-disabled' : ''"
+                                ng-show="account.hasFriend(userProfile.id)"
+                                ng-click="removeFriend(userProfile.id)">
+                            <span class="glyphicon glyphicon-minus-sign" title=""></span> Remove friend
+                        </a>
+                        <a role="button" class="btn btn-secondary btn-sm"
+                                ng-class="userProfile === account ? 'link-disabled' : ''"
+                                ng-show="!account.hasFriend(userProfile.id)"
+                                ng-click="addFriend(userProfile.id)">
+                            <span class="glyphicon glyphicon-plus-sign" title=""></span> Add friend
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div align="center">
+            <ul uib-pagination ng-model="currentPage" total-items="totalItems" page="currentPage" max-size="noOfPages"
+                items-per-page="entryLimit" first-text="&laquo;" last-text="&raquo;" direction-links="false"
+                boundary-links="true"></ul>
+        </div>
     </div>
 </div>

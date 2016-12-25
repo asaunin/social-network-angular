@@ -4,6 +4,15 @@ html {
     -webkit-text-size-adjust: 100%
 }
 
+.btn-sm {
+    margin: 1px;
+    padding: 1px;
+    font-size: 13px;
+    /*width: 120px;*/
+    /*vertical-align: middle;*/
+    /*float: right;*/
+}
+
 input, select, textarea, button {
     font-family: inherit;
     font-size: inherit;
@@ -12,7 +21,7 @@ input, select, textarea, button {
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
     color: #333;
     background-color: #fff
@@ -33,6 +42,10 @@ label {
     font-weight: 600
 }
 
+.pagination {
+    margin-top: 0;
+}
+
 .view-container {
     height: 85vh;
 }
@@ -41,10 +54,21 @@ label {
     white-space: pre-wrap;
 }
 
+.search-text {
+    width: 70%;
+    float: right;
+    margin-top: -5px;
+}
+
 .link-disabled {
     cursor: not-allowed;
     pointer-events: none;
     color: grey;
+}
+
+.table>tbody>tr>td {
+    border-top-style: none;
+    border-bottom: 1px dotted lightgrey;
 }
 
 .table .glyphicon-envelope {
@@ -62,19 +86,21 @@ label {
     margin-right: 5px;
 }
 
-#userSearch {
-    width: 70%;
-    float: right;
+.panel-body.users {
+    overflow-y: auto;
+    max-height: 73vh;
+    min-height: 73vh;
+    padding: 0;
 }
 
-.chat.messages {
+.panel-body.messages {
     overflow-y: auto;
     background: #f9f9f9;
     max-height: 79vh;
     min-height: 79vh;
 }
 
-.chat.dialog {
+.panel-body.dialog {
     overflow-y: auto;
     background: #f9f9f9;
     max-height: 64vh;
@@ -114,7 +140,7 @@ img {
 
 .chat li .chat-body {
     position: relative;
-    font-size: 11px;
+    font-size: 13px;
     padding: 10px;
     border: 1px solid #f1f5fc;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
@@ -249,7 +275,7 @@ small, .small {
     position: absolute;
     right: 8px;
     top: 27px;
-    font-size: 10px;
+    font-size: 13px;
     padding: 3px 5px;
 }
 
