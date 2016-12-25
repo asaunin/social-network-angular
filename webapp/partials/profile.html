@@ -4,9 +4,8 @@
             <strong>{{profile.getName()}}</strong>
         </div>
         <div class="panel-body">
-
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <h4>General information</h4>
                     <div class="col-lg-6 text-muted">
                         <p>First name:</p>
@@ -21,15 +20,19 @@
                         <p>{{profile.birth_date | date:"dd.MM.yyyy"}}</p>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <h4>Hobbies</h4>
                     <p>Lock</p>
                     <p>Stock</p>
                     <p>Two smoking barrels</p>
                 </div>
+                <div class="col-lg-3">
+                    <img class="img-rounded img-responsive center-block" alt="user_pic" width="150" height="150"
+                         ng-src="{{profile.getProfileAvatar()}}" ng-hide="account === profile">
+                </div>
             </div>
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <h4>Contacts</h4>
                     <div class="col-lg-6 text-muted">
                         <p>Email:</p>
