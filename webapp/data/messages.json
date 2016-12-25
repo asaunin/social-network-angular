@@ -60,49 +60,49 @@
     "date": "2016-07-21T15:01:13.000Z",
     "sender": 1,
     "recipient": 7,
-    "body": "Привет, Вито!\nКак семья?"
+    "body": "Hello Vito!\nHow's your family?"
   },
   {
     "id": 36,
     "date": "2016-07-26T00:40:52.000Z",
     "sender": 6,
     "recipient": 1,
-    "body": "Привет, чудо в перьях!"
+    "body": "Hi geek!"
   },
   {
     "id": 38,
     "date": "2016-07-26T01:13:42.000Z",
     "sender": 1,
     "recipient": 6,
-    "body": "Здарова, Микки!"
+    "body": "Hi, man!"
   },
   {
     "id": 39,
     "date": "2016-07-26T01:14:54.000Z",
     "sender": 6,
     "recipient": 1,
-    "body": "Как жизнь молодая?"
+    "body": "How's old socks?"
   },
   {
     "id": 40,
     "date": "2016-07-26T01:15:19.000Z",
     "sender": 1,
     "recipient": 6,
-    "body": "Да вроде нормуль. А у тебя?"
+    "body": "I'm Ok, and you?\nHow are you getting on?"
   },
   {
     "id": 41,
     "date": "2016-07-26T01:15:45.000Z",
     "sender": 6,
     "recipient": 1,
-    "body": "У меня тоже все в порядке.\nКак работа?\nНравится в T-Systems?"
+    "body": "Seems good enougth.\nWhat are you up to?\nHow do you in T-Systems?"
   },
   {
     "id": 45,
     "date": "2016-08-04T01:33:47.000Z",
     "sender": 7,
     "recipient": 1,
-    "body": "Семья нормально, а вот я уже - старый пень!"
+    "body": "It's all right. Though it seems, that I'm like an old tree stump!\nYears take their toll..."
   },
   {
     "id": 46,
@@ -144,20 +144,20 @@
     "date": "2016-08-14T14:07:43.000Z",
     "sender": 8,
     "recipient": 1,
-    "body": "Прошу добавить меня в Ваши друзья"
+    "body": "Hi Alex, glad to meet you here!"
   },
   {
     "id": 53,
     "date": "2016-08-14T14:09:30.000Z",
     "sender": 1,
     "recipient": 8,
-    "body": "Здарово, дружище, 100 лет тебя не видел!"
+    "body": "Howdy Antony, long time no seen you!"
   },
   {
     "id": 54,
     "date": "2016-08-14T14:20:08.000Z",
     "sender": 17,
     "recipient": 1,
-    "body": "Привет, Сашка, добавь меня, пожалуйста, в друзья!"
+    "body": "Buddy, can you add me in your friend list? Thx"
   }
 ]
