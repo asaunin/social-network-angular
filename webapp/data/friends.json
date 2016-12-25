@@ -1,90 +1,90 @@
 [
   {
-    "userid": 1,
-    "friendid": 8
+    "userId": 1,
+    "friendId": 8
   },
   {
-    "userid": 2,
-    "friendid": 1
+    "userId": 2,
+    "friendId": 1
   },
   {
-    "userid": 1,
-    "friendid": 9
+    "userId": 1,
+    "friendId": 9
   },
   {
-    "userid": 1,
-    "friendid": 3
+    "userId": 1,
+    "friendId": 3
   },
   {
-    "userid": 1,
-    "friendid": 12
+    "userId": 1,
+    "friendId": 12
   },
   {
-    "userid": 1,
-    "friendid": 10
+    "userId": 1,
+    "friendId": 10
   },
   {
-    "userid": 1,
-    "friendid": 13
+    "userId": 1,
+    "friendId": 13
   },
   {
-    "userid": 1,
-    "friendid": 2
+    "userId": 1,
+    "friendId": 2
   },
   {
-    "userid": 5,
-    "friendid": 1
+    "userId": 5,
+    "friendId": 1
   },
   {
-    "userid": 1,
-    "friendid": 5
+    "userId": 1,
+    "friendId": 5
   },
   {
-    "userid": 15,
-    "friendid": 2
+    "userId": 15,
+    "friendId": 2
   },
   {
-    "userid": 15,
-    "friendid": 5
+    "userId": 15,
+    "friendId": 5
   },
   {
-    "userid": 15,
-    "friendid": 3
+    "userId": 15,
+    "friendId": 3
   },
   {
-    "userid": 16,
-    "friendid": 1
+    "userId": 16,
+    "friendId": 1
   },
   {
-    "userid": 16,
-    "friendid": 13
+    "userId": 16,
+    "friendId": 13
   },
   {
-    "userid": 16,
-    "friendid": 8
+    "userId": 16,
+    "friendId": 8
   },
   {
-    "userid": 16,
-    "friendid": 14
+    "userId": 16,
+    "friendId": 14
   },
   {
-    "userid": 1,
-    "friendid": 16
+    "userId": 1,
+    "friendId": 16
   },
   {
-    "userid": 17,
-    "friendid": 3
+    "userId": 17,
+    "friendId": 3
   },
   {
-    "userid": 17,
-    "friendid": 5
+    "userId": 17,
+    "friendId": 5
   },
   {
-    "userid": 17,
-    "friendid": 1
+    "userId": 17,
+    "friendId": 1
   },
   {
-    "userid": 1,
-    "friendid": 17
+    "userId": 1,
+    "friendId": 17
   }
 ]

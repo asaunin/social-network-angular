@@ -117,8 +117,8 @@ app.controller('settingsController', ['UserService', '$http', '$scope',
 
     }]);
 
-app.controller('friendsController', ['UserService', 'filterFilter', '$http', '$scope', '$route', '$location',
-    function (UserService, filterFilter, $http, $scope, $route, $location) {
+app.controller('friendsController', ['UserService', 'filterFilter', '$http', '$scope',
+    function (UserService, filterFilter, $http, $scope) {
 
         if ($scope.isLoadingData) {
             return;
@@ -128,12 +128,12 @@ app.controller('friendsController', ['UserService', 'filterFilter', '$http', '$s
 
         $scope.addFriend = function (friendId) {
             $scope.account.addFriend(friendId);
-            getFriends($scope.account);
+            $scope.userList = UserService.getFriends($scope.account);
         };
 
         $scope.removeFriend = function (friendId) {
             $scope.account.removeFriend(friendId);
-            getFriends($scope.account);
+            $scope.userList = UserService.getFriends($scope.account);
         };
 
         // pagination controls
@@ -143,7 +143,7 @@ app.controller('friendsController', ['UserService', 'filterFilter', '$http', '$s
         $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
 
         // $watch search to update pagination
-        $scope.$watch('userSearch', function (newVal, oldVal) {
+        $scope.$watch('userSearch', function (newVal) {
             $scope.filtered = filterFilter($scope.userList, newVal);
             $scope.totalItems = $scope.filtered.length;
             $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
@@ -152,8 +152,8 @@ app.controller('friendsController', ['UserService', 'filterFilter', '$http', '$s
 
     }]);
 
-app.controller('usersController', ['UserService', 'filterFilter', '$http', '$scope', '$route', '$location',
-    function (UserService, filterFilter, $http, $scope, $route, $location) {
+app.controller('usersController', ['UserService', 'filterFilter', '$http', '$scope',
+    function (UserService, filterFilter, $http, $scope) {
 
         if ($scope.isLoadingData) {
             return;
@@ -176,7 +176,7 @@ app.controller('usersController', ['UserService', 'filterFilter', '$http', '$sco
         $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
 
         // $watch search to update pagination
-        $scope.$watch('userSearch', function (newVal, oldVal) {
+        $scope.$watch('userSearch', function (newVal) {
             $scope.filtered = filterFilter($scope.userList, newVal);
             $scope.totalItems = $scope.filtered.length;
             $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
@@ -184,30 +184,6 @@ app.controller('usersController', ['UserService', 'filterFilter', '$http', '$sco
         }, true);
 
     }]);
-
-app.filter('startFrom', function () {
-    return function (input, start) {
-        if (input) {
-            start = +start;
-            return input.slice(start);
-        }
-        return [];
-    };
-});
-
-app.filter('dateOrTime', function ($filter) {
-    return function (input) {
-        if (input === null) {
-            return "";
-        }
-        var today = new Date();
-        today.setHours(0, 0, 0, 0);
-        if (input.getTime() >= today.getTime()) {
-            return $filter('date')(new Date(input), "HH:mm");
-        }
-        return $filter('date')(new Date(input), "dd.MM.yyyy");
-    };
-});
 
 app.controller('messagesController', ['UserService', 'MessageService', '$http', '$scope',
     function (UserService, MessageService, $http, $scope) {

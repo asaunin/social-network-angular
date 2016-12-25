@@ -62,20 +62,27 @@ label {
     margin-right: 5px;
 }
 
-.panel-default > .panel-heading {
-    border-bottom-width: 0;
-}
-
 #userSearch {
     width: 70%;
     float: right;
 }
 
-.panel-body {
+.chat.messages {
+    overflow-y: auto;
     background: #f9f9f9;
+    max-height: 79vh;
+    min-height: 79vh;
 }
 
-.chat {
+.chat.dialog {
+    overflow-y: auto;
+    background: #f9f9f9;
+    max-height: 64vh;
+    min-height: 64vh;
+}
+
+.chat ul {
+    padding: 0;
     list-style: none;
     margin: 0;
 }

@@ -3,9 +3,9 @@
         <div class="panel-heading">
             <strong>Last messages</strong>
         </div>
-        <div class="panel-body" id="chat" style="max-height: 79vh; min-height: 79vh; overflow-y: auto;">
+        <div class="panel-body chat messages" id="chat">
             <div class="chat-message">
-                <ul class="chat" style="padding: 0; list-style-type: none" ng-repeat="message in messageList | orderBy: 'date'">
+                <ul class="chat" ng-repeat="message in messageList | orderBy: 'date'">
                     <li ng-class="['clearfix', message.alignment]">
                         <a href="#/messages/{{message.interlocutor.id}}" title="Send message">
                             <span ng-class="['chat-img', 'pull-' + message.alignment]">

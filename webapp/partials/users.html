@@ -1,10 +1,8 @@
 <div class="container-fluid col-sm-12 view-container">
     <div class="panel panel-default ">
         <div class="panel-heading">
-            <div class="pull-left" style="padding-top: 7px;">
-                <strong>
-                    Users
-                </strong>
+            <div class="pull-left">
+                <strong>Users</strong>
             </div>
             <div class="input-group input-group-sm">
                 <input type="text" ng-model="userSearch" id="userSearch" class="form-control" placeholder="Search..."
@@ -19,11 +17,12 @@
         <table class="table table-hover">
             <tr ng-repeat="userProfile in userList | orderBy: '[first_name, last_name]' | filter : userSearch | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
                 <td class="col-md-5">
-                    <a href="#/profile/{{userProfile.id}}" ng-click="onClickTab('profile')" id="profile" title="View profile">
+                    <a href="#/profile/{{userProfile.id}}" ng-click="onClickTab('profile')" id="profile"
+                       title="View profile">
                         {{userProfile.getName()}}
                     </a>
                 </td>
-                <td class="col-md-3">
+                <td class="col-md-3"> <!-- TODO: Replace by directive -->
                     <span ng-show="userProfile.hasFriend(account.id)">{{userProfile.email}}</span>
                 </td>
                 <td class="col-md-1">

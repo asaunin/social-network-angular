@@ -17,11 +17,11 @@
                 <td>{{profile.last_name}}</td>
             </tr>
             <tr>
-                <td>Email:</td>
+                <td>Email:</td> <!-- TODO: Replace by directive -->
                 <td><span ng-if="profile.hasFriend(account.id) || account.id === profile.id">{{profile.email}}</span></td>
             </tr>
             <tr>
-                <td>Phone:</td>
+                <td>Phone:</td> <!-- TODO: Replace by directive -->
                 <td><span ng-if="profile.hasFriend(account.id) || account.id === profile.id">{{profile.phone}}</span></td>
             </tr>
             <tr>
@@ -32,10 +32,10 @@
                 <td>Date of birth:</td>
                 <td>{{profile.birth_date | date:"dd.MM.yyyy"}}</td>
             </tr>
-            <tr>
-                <td>Registered at:</td>
-                <td>{{profile.reg_date | date:"dd.MM.yyyy"}}</td>
-            </tr>
+            <!--<tr>-->
+                <!--<td>Registered at:</td>-->
+                <!--<td>{{profile.reg_date | date:"dd.MM.yyyy"}}</td>-->
+            <!--</tr>-->
         </table>
     </div>
 </div>

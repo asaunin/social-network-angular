@@ -1,11 +1,11 @@
 <div class="container-fluid col-sm-12 view-container" ng-submit="sendMessage()">
     <div class="panel panel-default">
         <div class="panel-heading">
-            Conversation with <a href="#/profile/{{profile.id}}"><strong>{{profile.getName()}}</strong></a>
+            <strong>Conversation with </strong><a href="#/profile/{{profile.id}}"><strong>{{profile.getName()}}</strong></a>
         </div>
-        <div class="panel-body" id="chat" style="max-height: 64vh; min-height: 64vh; overflow-y: auto;">
+        <div class="panel-body chat dialog" id="chat">
             <div class="chat-message">
-                <ul class="chat" style="padding: 0; list-style-type: none"
+                <ul class="chat"
                     ng-repeat="message in messageList | orderBy: 'date'">
                     <li ng-class="['clearfix', message.alignment]">
                             <span ng-class="['chat-img', 'pull-' + message.alignment]">
@@ -29,7 +29,7 @@
             <form name="dialogForm" role="form">
                 <div class="form-group">
                     <textarea class="form-control" rows="3" ng-required="true" maxlength="255" id="messageBody"
-                              name="messageBody" ng-model="messageText"
+                              name="messageBody" ng-model="messageText" title="Your test"
                               ></textarea>
                 </div>
                 <input type="submit" value="Send" ng-class="['btn btn-primary', dialogForm.$valid ? '' : 'disabled']">

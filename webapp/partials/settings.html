@@ -4,7 +4,7 @@
         <div class="panel-heading">
             <strong>Profile settings</strong>
         </div>
-        <div class="panel-body" style="background: #ffffff">
+        <div class="panel-body">
             <form class="form-horizontal" name="userForm" novalidate>
                 <div class="form-group" show-errors="{ showSuccess: true }">
                     <label class="col-md-4 control-label">First Name</label>
@@ -39,8 +39,8 @@
                                    class="form-control" type="email" required maxlength="255"
                                    value='{{editableAccount.email}}'>
                         </div>
-                        <p ng-show="userForm.email.$error.required" class="help-block" >The user's email is required</p>
-                        <p ng-show="userForm.email.$error.email" class="help-block" >The email address is invalid</p>
+                        <p ng-show="userForm.email.$error.required" class="help-block">The user's email is required</p>
+                        <p ng-show="userForm.email.$error.email" class="help-block">The email address is invalid</p>
                     </div>
                 </div>
                 <div class="form-group" show-errors="{ showSuccess: true }">
@@ -53,7 +53,8 @@
                                    class="form-control" required value='{{editableAccount.phone}}'
                                    ng-pattern="/^\+7[0-9]{10}$/">
                         </div>
-                        <p ng-show="userForm.phone.$error.required" class="help-block">Valid phone number is required</p>
+                        <p ng-show="userForm.phone.$error.required" class="help-block">Valid phone number is
+                            required</p>
                     </div>
                 </div>
                 <div class="form-group">
@@ -85,7 +86,8 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label"></label>
                     <div class="col-md-4">
-                        <input type="submit" ng-class="['btn btn-primary', userForm.$valid && userForm.$dirty ? '' : 'disabled']"
+                        <input type="submit"
+                               ng-class="['btn btn-primary', userForm.$valid && userForm.$dirty ? '' : 'disabled']"
                                value="Submit information">
                     </div>
                 </div>

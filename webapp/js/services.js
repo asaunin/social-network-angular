@@ -1,6 +1,6 @@
 var app = angular.module('benchmates');
 
-app.service('UserService', ['$http', '$location', '$rootScope', function ($http, $location, $rootScope) {
+app.service('UserService', ['$http', '$location', function ($http, $location) {
 
     var users = [];
 
@@ -27,18 +27,18 @@ app.service('UserService', ['$http', '$location', '$rootScope', function ($http,
             });
         };
         prototype.addFriend = function (id) {
-            if (prototype.id != id) {
+            if (prototype.id !== id) {
                 prototype.friends.push(id);
             }
         };
         prototype.removeFriend = function (id) {
-            if (prototype.id != id) {
+            if (prototype.id !== id) {
                 var index = prototype.friends.indexOf(id);
                 prototype.friends.splice(index, 1);
             }
         };
         prototype.hasFriend = function (id) {
-            return (prototype.friends.indexOf(id) != -1);
+            return (prototype.friends.indexOf(id) !== -1);
         };
         prototype.getProfileAvatar = function () {
             if (prototype.avatar === undefined) {
@@ -82,14 +82,9 @@ app.service('UserService', ['$http', '$location', '$rootScope', function ($http,
             if (user.avatar === undefined) {
                 var url = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/img/avatars/' + user.id + '.jpg';
                 user.avatar = '/img/avatars/undefined.gif';
-                try {
-                    $http.get(url).then(function (response) {
-                        user.avatar = url;
-                    }).catch(function (err) {
-                        // console.warn(err);
-                    });
-                } finally {
-                }
+                $http.get(url).then(function () {
+                    user.avatar = url;
+                });
             }
         });
     }
@@ -97,8 +92,8 @@ app.service('UserService', ['$http', '$location', '$rootScope', function ($http,
     function loadFriends() {
         return $http.get('/data/friends.json').then(function (response) {
             response.data.forEach(function (data) {
-                var user = getUserById(data.userid);
-                user.addFriend(data.friendid);
+                var user = getUserById(data.userId);
+                user.addFriend(data.friendId);
             });
         })
     }
@@ -113,14 +108,6 @@ app.service('UserService', ['$http', '$location', '$rootScope', function ($http,
             friends.push(getUserById(id));
         });
         return friends;
-    }
-
-    function removeFriend(account, friendId) {
-        if (account.id != friendId) {
-            if (account.friends.includes(friendId)) {
-                account.friends.splice(account.friends.indexOf(friendId), 1);
-            }
-        }
     }
 
     return {
