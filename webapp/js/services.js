@@ -42,14 +42,14 @@ app.service('UserService', ['$http', '$location', function ($http, $location) {
         };
         prototype.getProfileAvatar = function () {
             if (prototype.avatar === undefined) {
-                prototype.avatar = '/img/avatars/undefined.gif';
+                prototype.avatar = './img/avatars/undefined.gif';
                 return prototype.avatar;
             } else {
                 return prototype.avatar;
             }
         };
         prototype.getAvatar = function () {
-            if (prototype.avatar === undefined || prototype.avatar === '/img/avatars/undefined.gif') {
+            if (prototype.avatar === undefined || prototype.avatar === './img/avatars/undefined.gif') {
                 return prototype.getName();
             } else {
                 return prototype.avatar;
@@ -70,7 +70,7 @@ app.service('UserService', ['$http', '$location', function ($http, $location) {
     }
 
     function loadUsers() {
-        return $http.get('/data/profiles.json').then(function (response) {
+        return $http.get('./data/profiles.json').then(function (response) {
             response.data.forEach(function (data) {
                 users.push(getUser(data));
             });
@@ -80,8 +80,8 @@ app.service('UserService', ['$http', '$location', function ($http, $location) {
     function loadAvatars() {
         users.forEach(function (user) {
             if (user.avatar === undefined) {
-                var url = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/img/avatars/' + user.id + '.jpg';
-                user.avatar = '/img/avatars/undefined.gif';
+                var url = './img/avatars/' + user.id + '.jpg';
+                user.avatar = './img/avatars/undefined.gif';
                 $http.get(url).then(function () {
                     user.avatar = url;
                 });
@@ -90,7 +90,7 @@ app.service('UserService', ['$http', '$location', function ($http, $location) {
     }
 
     function loadFriends() {
-        return $http.get('/data/friends.json').then(function (response) {
+        return $http.get('./data/friends.json').then(function (response) {
             response.data.forEach(function (data) {
                 var user = getUserById(data.userId);
                 user.addFriend(data.friendId);
@@ -155,7 +155,7 @@ app.service('MessageService', ['UserService', '$http', '$timeout', '$rootScope',
     }
 
     function loadMessages() {
-        return $http.get('/data/messages.json').then(function (response) {
+        return $http.get('./data/messages.json').then(function (response) {
             response.data.forEach(function (data) {
                 var message = data;
                 message.date = new Date(Date.parse(data.date));
