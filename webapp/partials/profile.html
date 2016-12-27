@@ -46,19 +46,9 @@
                          ng-src="{{profile.getProfileAvatar()}}">
                     <br>
                     <p>
-                        <button-send-message user-id="{{profile.id}}"></button-send-message>
-                        <a role="button" class="btn btn-secondary btn-sm text-left"
-                           ng-class="profile === account ? 'link-disabled' : ''"
-                           ng-show="account.hasFriend(profile.id)"
-                           ng-click="removeFriend(profile.id)">
-                            <span class="glyphicon glyphicon-minus-sign" title=""></span> Remove friend
-                        </a>
-                        <a role="button" class="btn btn-secondary btn-sm"
-                           ng-class="profile === account ? 'link-disabled' : ''"
-                           ng-show="!account.hasFriend(profile.id)"
-                           ng-click="addFriend(profile.id)">
-                            <span class="glyphicon glyphicon-plus-sign" title=""></span> Add friend
-                        </a>
+                        <button-send-message profile="profile"></button-send-message>
+                        <button-remove-friend account="account" profile="profile" remove="removeFriend(profile.id)"></button-remove-friend>
+                        <button-add-friend account="account" profile="profile" add="addFriend(profile.id)"></button-add-friend>
                     </p>
                 </div>
             </div>
