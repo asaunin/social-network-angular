@@ -28,20 +28,10 @@
                     <span class="text-muted" ng-show="userProfile.hasFriend(account.id)">{{userProfile.email}}</span>
                 </td>
                 <td class="col-md-2 border-bottom">
-                    <button-send-message user-id="{{userProfile.id}}"></button-send-message>
-                    <br> <!-- TODO: Replace Add/Remove buttons as a directives -->
-                    <a role="button" class="btn btn-secondary btn-sm text-left"
-                       ng-class="userProfile === account ? 'link-disabled' : ''"
-                       ng-show="account.hasFriend(userProfile.id)"
-                       ng-click="removeFriend(userProfile.id)">
-                        <span class="glyphicon glyphicon-minus-sign" title=""></span> Remove friend
-                    </a>
-                    <a role="button" class="btn btn-secondary btn-sm"
-                       ng-class="userProfile === account ? 'link-disabled' : ''"
-                       ng-show="!account.hasFriend(userProfile.id)"
-                       ng-click="addFriend(userProfile.id)">
-                        <span class="glyphicon glyphicon-plus-sign" title=""></span> Add friend
-                    </a>
+                    <button-send-message profile="userProfile"></button-send-message>
+                    <br>
+                    <button-remove-friend account="account" profile="userProfile" remove="removeFriend(userProfile.id)"></button-remove-friend>
+                    <button-add-friend account="account" profile="userProfile" add="addFriend(userProfile.id)"></button-add-friend>
                 </td>
             </tr>
         </table>
