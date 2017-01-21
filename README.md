@@ -1,8 +1,8 @@
 # Social network (web-application)
 
-It's my first attempt in Angular framework
-As a base markup I've taken JSP-based frontend from my previous project (see on github below)
-Here's no backend, so that an each time you reload a project, you'll get the same data from preset json files.
+It's my first attempt in Angular framework. As a base markup I've taken JSP-based frontend from my previous project (see on github below). 
+
+Here's no backend at all, so that, an each time you reloading a project, you'll get the same data from preset json files.
 
 ## Under to hood
 
