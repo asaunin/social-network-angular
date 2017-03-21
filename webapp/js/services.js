@@ -8,8 +8,8 @@ app.service('UserService', ['$http', '$location', function ($http, $location) {
         var prototype = data;
         prototype.birth_date = Date.parse(data.birth_date);
         prototype.friends = [];
-        prototype.getSex = function () {
-            switch (prototype.sex) {
+        prototype.getGender = function () {
+            switch (prototype.gender) {
                 case 1:
                     return 'Male';
                 case 2:

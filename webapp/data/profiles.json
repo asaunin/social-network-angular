@@ -8,7 +8,7 @@
     "email": "asaunin@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+79110940457",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 6,
@@ -19,7 +19,7 @@
     "email": "m_korleone@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+76545465465",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 7,
@@ -30,7 +30,7 @@
     "email": "v_korleone@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+76545465465",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 8,
@@ -41,7 +41,7 @@
     "email": "tony@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+76545465465",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 9,
@@ -52,7 +52,7 @@
     "email": "kapone@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+76545465465",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 10,
@@ -63,7 +63,7 @@
     "email": "pablo@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+76545465465",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 11,
@@ -74,7 +74,7 @@
     "email": "jonny@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+76545465465",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 3,
@@ -85,7 +85,7 @@
     "email": "zina@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+76545465465",
-    "sex": 2
+    "gender": 2
   },
   {
     "id": 12,
@@ -96,7 +96,7 @@
     "email": "koen@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+76545465465",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 13,
@@ -107,7 +107,7 @@
     "email": "brigante@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+76545465465",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 2,
@@ -118,7 +118,7 @@
     "email": "vinc@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": null,
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 5,
@@ -129,7 +129,7 @@
     "email": "vitya@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+79219999999",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 14,
@@ -140,7 +140,7 @@
     "email": "sharko@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+79696546546",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 15,
@@ -151,7 +151,7 @@
     "email": "lucky@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+79696546546",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 16,
@@ -162,7 +162,7 @@
     "email": "donny@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+76545465465",
-    "sex": 1
+    "gender": 1
   },
   {
     "id": 17,
@@ -173,6 +173,6 @@
     "email": "vega@mail.ru",
     "password": "202cb962ac59075b964b07152d234b70",
     "phone": "+76546495165",
-    "sex": 1
+    "gender": 1
   }
 ]
